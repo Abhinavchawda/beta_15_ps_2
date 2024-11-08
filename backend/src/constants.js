@@ -5,3 +5,4 @@ export const COOKIE_OPTIONS = {
     secure: true
 }
 export const HASHING_ROUNDS = 10
+export const DB_NAME="DB"
