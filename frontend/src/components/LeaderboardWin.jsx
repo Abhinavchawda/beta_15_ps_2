@@ -4,7 +4,7 @@ import React from 'react'
 export default function LeaderboardWin({data,flagS}) {
   return (
     <>
-        <Table>
+        <Table className='min-w-24'>
             <Table.Head>
                 <Table.HeadCell>S No.</Table.HeadCell>
                 <Table.HeadCell>Name</Table.HeadCell>

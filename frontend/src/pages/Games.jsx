@@ -29,10 +29,15 @@ export default function Games() {
     },[])
   return (
     <div>
+        <p className='text-center mt-3'>LeaderBoard</p>
       {/* LeaderBoard Div */}
-      <div>
+      <div className='flex flex-col md:flex-row gap-10 items-center justify-center mt-5 mx-3'>
         <LeaderboardWin data={streakHolder} flagS = {true}></LeaderboardWin>
         <LeaderboardWin data={scoreHolder} flagS = {false}></LeaderboardWin>
+      </div>
+      {/* Games Section Display */}
+      <div>
+        
       </div>
     </div>
   )
