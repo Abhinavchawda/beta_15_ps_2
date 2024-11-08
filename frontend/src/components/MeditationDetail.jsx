@@ -1,11 +1,12 @@
 import React from 'react';
+import BreathingExercise from './BreathingExercise';
 
 export default function MeditationDetail() {
   return (
     <div className="min-h-[100vh] my-10 px-2 md:px-16">
       {/* Header */}
       <header className="flex flex-col items-start mb-16">
-        <h1 className="text-2xl font-bold">Mindful Breathing</h1>
+        <h1 className="text-2xl font-bold">Mindful</h1>
         <p className="text-sm text-gray-500">Best Practice Meditations</p>
       </header>
 
@@ -27,7 +28,8 @@ export default function MeditationDetail() {
 
       {/* Start Button */}
       <div className="mt-8 flex justify-center">
-        <button className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-xl">Start Meditation</button>
+        {/* <button className="bg-blue-700 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded-xl">Start Meditation</button> */}
+        <BreathingExercise />
       </div>
     </div>
   );

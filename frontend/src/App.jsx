@@ -8,16 +8,18 @@ import Chat from "./pages/chat"
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        <Route path="/chat" element={<Chat />} />
-        <div>
-          <Meditation />
-          <MeditationDetail />
-          <Games></Games>
-        </div>
-      </Routes>
-    </Router>
+    <div>
+      <Router>
+        <Routes>
+          <Route path="/chat" element={<Chat />} />
+        </Routes>
+      </Router>
+      <div>
+        <Meditation />
+        <MeditationDetail />
+        <Games></Games>
+      </div>
+    </div>
   )
 }
 
