@@ -1,6 +1,12 @@
+import Meditation from "./components/Meditation"
+import MeditationDetail from "./components/MeditationDetail"
+
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Meditation />
+      <MeditationDetail />
+    </div>
   )
 }
 
