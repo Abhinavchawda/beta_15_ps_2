@@ -1,6 +1,10 @@
+import Games from "./pages/Games"
+
 const App = () => {
   return (
-    <div>App</div>
+    <div>
+      <Games></Games>
+    </div>
   )
 }
 
