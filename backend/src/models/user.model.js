@@ -27,6 +27,14 @@ const UserSchema = new mongoose.Schema(
         badges: {
             type: Number,
             default: 0
+        },
+        score: {
+            type: Number,
+            default: 0
+        },
+        streak_count: {
+            type: Number,
+            default: 0
         }
     },
     { timestamps: true }
