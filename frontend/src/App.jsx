@@ -1,3 +1,7 @@
+import Meditation from "./components/Meditation"
+import MeditationDetail from "./components/MeditationDetail"
+import Games from "./pages/Games"
+
 import React from "react"
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import Chat from "./pages/chat"
@@ -7,7 +11,11 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/chat" element={<Chat />} />
-        <Route path="/" element={<div>App</div>} />
+        <div>
+          <Meditation />
+          <MeditationDetail />
+          <Games></Games>
+        </div>
       </Routes>
     </Router>
   )
