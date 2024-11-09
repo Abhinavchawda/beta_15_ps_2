@@ -6,11 +6,11 @@ import { COOKIE_OPTIONS } from "../constants.js"
 
 export const register = asyncWrapper(async (req, res) => {
     // Extract data from request body
-    const { fullName, username, email, password } = req.body
-
+    const { username, email, password } = req.body
+    
     // Checking whether all the required fields were sent ot not
     if (
-        [fullName, username, email, password].some(
+        [username, email, password].some(
             (field) => field?.trim() == ""
         )
     ) {
@@ -19,28 +19,29 @@ export const register = asyncWrapper(async (req, res) => {
             statusCode: 400
         })
     }
-
+    
     // Checking whether a user with sent username or email already exists
     const existingUser = await User.findOne({
         $or: [{ username }, { email }]
     })
+
     if (existingUser) {
         throw new ApiError({
             message: "User already exist",
             statusCode: 409
         })
     }
-
+    
     // Make entry into DB
     const user = await User.create({
-        fullName,
         email,
         username,
         password
     })
+    
 
     const createdUser = await User.findById(user._id).select(
-        "-password -refreshToken"
+        "-password"
     )
     if (!createdUser) {
         throw new ApiError({
@@ -84,7 +85,6 @@ export const login = asyncWrapper(async (req, res) => {
             statusCode: 400
         })
     }
-    user = user.select("-password")
 
     const accessToken = user.generateAccessToken()
 
@@ -104,52 +104,15 @@ export const login = asyncWrapper(async (req, res) => {
 })
 
 export const logout = asyncWrapper(async (req, res) => {
-    await User.findByIdAndUpdate(
-        req.user._id,
-        {
-            $unset: { refreshToken: 1 }
-        },
-        { new: true }
-    )
-
     return res
         .status(200)
         .clearCookie("accessToken", COOKIE_OPTIONS)
-        .clearCookie("refreshToken", COOKIE_OPTIONS)
         .json(
             new ApiResponse({
                 message: "User logged out succesfully",
                 statusCode: 200
             })
         )
-})
-
-export const updatePassword = asyncWrapper(async (req, res) => {
-    const { oldPassword, newPassword } = req.body
-    const user = await User.findById(req.user?._id)
-    if (!user) {
-        throw new ApiError({
-            message: "Unauthorized request",
-            statusCode: 401
-        })
-    }
-    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword)
-    if (!isPasswordCorrect) {
-        throw new ApiError({
-            message: "Invalid old password",
-            statusCode: 400
-        })
-    }
-
-    user.password = newPassword
-    await user.save({ ValidateBeforeSave: false })
-
-    return res.status(200).json(
-        new ApiResponse({
-            statusCode: 200,
-            message: "Password changed successfully"
-        })
-    )
 })
 
 export const getCurrentUser = asyncWrapper(async (req, res) => {
@@ -162,65 +125,52 @@ export const getCurrentUser = asyncWrapper(async (req, res) => {
     )
 })
 
-export const updateAccountDetails = asyncWrapper(async (req, res) => {
-    const { username, fullName, email } = req.body
-    if (!username && !fullName && !email) {
-        throw new ApiError({
-            message: "At least 1 field is required",
-            statusCode: 401
-        })
-    }
+// export const getTopScore = asyncWrapper(async (req,res)=>{
+//     const response = await User.find({}).sort('-score').limit(10);
+//     console.log(data);
+//     if(!response){
+//         throw new ApiError({
+//             statusCode: 400,
+//             message: data.message ,
+//         })
+//     }
+//     else{
+//         return res.status(200).json(
+//             new ApiResponse({
+//                 statusCode: 200,
+//                 message: "Account details updated successfully",
+//                 data: data
+//             })
+//         )
+//     }
+// })
 
-    const user = await User.findByIdAndUpdate(
+export const updateScore = asyncWrapper(async (req,res)=>{
+    const {score} = req.body
+    await User.findByIdAndUpdate(
         req.user?._id,
-        { $set: { username, fullName, email } },
+        { $set: { score } },
         { new: true }
-    ).select("-password -refreshToken")
-
+    )
     return res.status(200).json(
         new ApiResponse({
             statusCode: 200,
-            message: "Account details updated successfully",
-            data: user
+            message: "Score updated successfully"
         })
     )
 })
 
-
-export const getTopScore = asyncWrapper(async (req,res)=>{
-    const response = await User.find({}).sort('-score').limit(10);
-    console.log(data);
-    if(!response){
-        throw new ApiError({
-            statusCode: 400,
-            message: data.message ,
-        })
-    }
-    else{
-        return res.status(200).json(
-            new ApiResponse({
-                statusCode: 200,
-                message: "Account details updated successfully",
-                data: data
-            })
-        )
-    }
-})
-
-const getTopStreak = asyncWrapper(async(req,res)=> {
-    const result = await User.find({}).sort('-streak_count').limit(10);
-    console.log(data);
-    if(!result){
-        throw new ApiError({
-            statusCode : 400,
-            message:"Wrong in getTopStreak",
-        })
-    }
+export const updateBadgeCount = asyncWrapper(async (req,res)=>{
+    const {badges} = req.body
+    await User.findByIdAndUpdate(
+        req.user?._id,
+        { $set: { badges } },
+        { new: true }
+    )
     return res.status(200).json(
         new ApiResponse({
-            statusCode:200,
-            message:"The top 10 streak holders has been sent to the frontend",
-            data:data
+            statusCode: 200,
+            message: "Badge count updated successfully"
         })
     )
 })
