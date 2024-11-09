@@ -91,7 +91,7 @@ const Chat = () => {
             />
             <button
               type="submit"
-              className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              className="w-full p-2 cursor-pointer text-white bg-blue-500 rounded hover:bg-blue-600"
               disabled={connectionStatus !== "connected"}
             >
               Join
@@ -162,7 +162,7 @@ const Chat = () => {
               />
               <button
                 type="submit"
-                className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                className="px-4 py-2 text-white cursor-pointer bg-blue-500 rounded hover:bg-blue-600 disabled:bg-gray-400"
                 disabled={connectionStatus !== "connected"}
               >
                 Send
