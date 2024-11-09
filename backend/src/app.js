@@ -1,7 +1,6 @@
 import express from "express"
 import cors from "cors"
 import dotenv from "dotenv"
-import JournalRouter from './routes/journal.route.js'
 dotenv.config()
 import {jsonFileSizeLimit, apiUrlPrefix} from "./constants.js"
 import {UserRouter, JournalRouter} from "./routes/index.js"
