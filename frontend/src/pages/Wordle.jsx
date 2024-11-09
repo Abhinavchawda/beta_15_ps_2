@@ -163,7 +163,7 @@ const Wordle = () => {
     }, [tries, won])
 
     return (
-        <div className="h-screen bg-slate-600 flex flex-col gap-4 justify-center items-center">
+        <div className="h-screen bg-gray-900 flex flex-col gap-4 justify-center items-center">
             <h1 className="text-5xl text-yellow-400 font-bold">Guess The Word</h1>
             <div className="grid grid-rows-6 grid-cols-5 border border-solid border-white">
                 {

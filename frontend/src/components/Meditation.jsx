@@ -1,9 +1,8 @@
 import { Moon, Heart, Zap, Wind } from 'lucide-react'
-import BreathingExercise from '../components/BreathingExercise'
-
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux"
+import BreathingExercise from '../components/BreathingExercise'
 
 const categories = [
   { name: 'Sleep', icon: Moon, theme: { bgColor: 'bg-blue-100', textColor: 'text-blue-900', gradient: 'from-blue-300 via-blue-100 to-blue-50' } },
@@ -60,8 +59,7 @@ const meditations = [
 export default function Meditation() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
-  const currentUser = useSelector(state => state);
-  console.log("user", currentUser)
+  const currentUser = useSelector(state => state?.user?.currentUser)
 
   const navigate = useNavigate();
   return (
@@ -69,7 +67,7 @@ export default function Meditation() {
       {/* Header Section */}
       <header className="mb-12">
         <nav className="flex flex-wrap gap-4 justify-between items-center bg-slate-400 p-2 pl-6 rounded-2xl">
-          <div className="text-4xl font-semibold">Hello, {currentUser.user.currentUser.user.username}</div>
+          <div className="text-3xl font-semibold">Hello, <span className='uppercase'>{currentUser?._doc?.username || "User"}</span></div>
           <ul className="flex flex-wrap space-x-6">
             {categories.map((category) => (
               <li key={category.name}>
@@ -90,11 +88,10 @@ export default function Meditation() {
         </nav>
       </header>
 
-      {/* Meditations Section */}
       <section className={`rounded-2xl my-4 py-16 bg-gradient-to-r ${selectedCategory.theme.gradient}`}>
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
-            {/* Left Content */}
+
             <div className="order-2 md:order-1 text-center md:text-left">
               <h2 className="text-4xl font-semibold mb-6">
                 Discover the Power of Meditation
@@ -104,19 +101,11 @@ export default function Meditation() {
               </p>
             </div>
 
-            {/* Right Image */}
-            <div className="order-1 md:order-2 flex justify-center">
-              <img
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSI6Wu1knPMDHjpRc341rPR1JJXNrYeOvqFag&s"
-                alt="Person meditating"
-                className="rounded-lg shadow-2xl transform transition duration-300 hover:scale-105"
-              />
-            </div>
+            <BreathingExercise/>
           </div>
         </div>
       </section>
 
-      {/* Main Content Section */}
       <section>
         <h2 className="text-3xl mt-8 font-semibold mb-6">Get Relaxed</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">

@@ -1,7 +1,6 @@
 import React from 'react'
 import { HeartPulseIcon } from 'lucide-react/dist/cjs/lucide-react'
 import { useParams } from 'react-router-dom'
-import BreathingExercise from '../components/BreathingExercise'
 
 export default function MeditationDetail() {
   const data = new Map()
@@ -69,8 +68,6 @@ export default function MeditationDetail() {
       <p className="my-4 flex flex-col justify-center items-center">
         {obj?.content}
       </p>
-
-      <BreathingExercise />
     </div>
   )
 }
