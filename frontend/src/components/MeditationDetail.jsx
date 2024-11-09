@@ -1,12 +1,13 @@
 import React from 'react';
 import BreathingExercise from './BreathingExercise';
+import { HeartPulseIcon } from 'lucide-react/dist/cjs/lucide-react';
 
 export default function MeditationDetail() {
   return (
     <div className="min-h-[100vh] my-10 px-2 md:px-16">
       {/* Header */}
-      <header className="flex flex-col items-start mb-16">
-        <h1 className="text-2xl font-bold">Mindful</h1>
+      <header className="flex flex-col items-start mb-10">
+        <h1 className="text-4xl text-[rgb(16,20,61)] font-bold">Mindful Activities</h1>
         <p className="text-sm text-gray-500">Best Practice Meditations</p>
       </header>
 
@@ -16,14 +17,24 @@ export default function MeditationDetail() {
       </div>
 
       {/* Logo */}
-      <div className="my-4">
-        <img src="https://example.com/logo.png" alt="Logo" className="w-24 h-24" />
+      <div className="my-4 px-2">
+        <HeartPulseIcon />
+        {/* <img src="https://example.com/logo.png" alt="Logo" className="w-24 h-24" /> */}
       </div>
 
       {/* Content */}
-      <div className="mt-4 prose prose-sm">
-        <p>This is a calming meditation to help you relax and drift off to sleep. Find a comfortable position, close your eyes, and focus on your breath.</p>
-        <p>Imagine a peaceful scene, like a serene beach or a quiet forest. Let go of any stress or worries, and allow your mind to unwind.</p>
+      <div className="mt-4 flex flex-col justify-center items-center">
+        Meditation is an ancient practice that has been used for centuries to promote relaxation, reduce stress, and improve overall well-being. It involves focusing your
+
+        mind on a specific object, thought, or sensation. This can be done through various techniques, such as mindfulness meditation, transcendental meditation, and guided meditation.
+        <br />
+        <br />
+        Additional Tips
+        <br />
+        Start with a short meditation session: Begin with 5-10 minutes and gradually increase the duration as you become more comfortable.<br />
+        Find a meditation teacher or app: A teacher or app can provide guidance and structure to your meditation practice.<br />
+        Be patient: It takes time to develop a regular meditation practice. Don't get discouraged if your mind wanders at first.<br />
+        Experiment with different techniques: Try different meditation techniques to find what works best for you.<br />
       </div>
 
       {/* Start Button */}

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Brain, Gamepad2 } from "lucide-react"
 import { Link } from 'react-router-dom'
 import Footer from '../components/Footer'
+import Joke from './Joke'
 
 export default function LandingPage() {
     const [email, setEmail] = useState('')
@@ -126,6 +127,8 @@ export default function LandingPage() {
                         </div>
                     </div>
                 </section>
+
+                <Joke />
 
             </main>
             <Footer/>

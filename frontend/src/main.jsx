@@ -18,6 +18,8 @@ import Chat from "./pages/Chat"
 import Layout from './Layout'
 import Wordle from './pages/Wordle'
 import AuthForm from './components/AuthForm.jsx'
+import About from './pages/About.jsx'
+import Journal from './pages/Journal.jsx'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -27,6 +29,8 @@ const router = createBrowserRouter(
             <Route path="chat" element={<Chat />}/>
             <Route path="meditate" element={<Meditate />}/>
             <Route path="user/authenticate" element={<AuthForm />}/>
+            <Route path="about" element={<About />}/>
+            <Route path="journal" element={<Journal />}/>
             <Route path="game/" element={<Outlet />}>
               <Route path="wordle" element={<Wordle />}/>
             </Route>
