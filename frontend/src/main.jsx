@@ -21,6 +21,7 @@ import Wordle from './pages/Wordle'
 import AuthForm from './components/AuthForm.jsx'
 import About from './pages/About.jsx'
 import Journal from './pages/Journal.jsx'
+import Simon from './pages/Simon.jsx'
 
 const router = createBrowserRouter(
     createRoutesFromElements(
@@ -33,6 +34,7 @@ const router = createBrowserRouter(
             <Route path="journal" element={<Journal />}/>
             <Route path="game/" element={<Outlet />}>
               <Route path="wordle" element={<Wordle />}/>
+              <Route path="simon" element={<Simon />}/>
             </Route>
             <Route path="meditation/:id" element={<MeditationDetail/>}/>
         </Route>
