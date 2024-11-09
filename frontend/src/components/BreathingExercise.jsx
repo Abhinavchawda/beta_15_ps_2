@@ -55,7 +55,7 @@ const BreathingExercise = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 rounded p-4 min-h-[30vh] w-fit mx-auto shadow-lg gap-3">
+    <div className="flex flex-col items-center justify-center space-y-4 rounded-xl border border-white p-4 min-h-[30vh] w-fit mx-auto shadow-xl gap-3">
       <h1 className="text-2xl font-semibold">Breathing Exercise</h1>
       {isSessionActive ? (
         <div className="text-xl">
@@ -76,7 +76,7 @@ const BreathingExercise = () => {
           <span>
             {
               isSessionActive ?
-              "Replay"
+              "Pause"
               :
               "Play"
             }

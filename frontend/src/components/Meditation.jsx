@@ -1,5 +1,6 @@
-import { Moon, Heart, Zap, Wind } from 'lucide-react'
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { Moon, Heart, Zap, Wind, PauseIcon, PlayIcon, Play, Pause } from 'lucide-react'
+// import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux"
 import BreathingExercise from '../components/BreathingExercise'
@@ -73,11 +74,10 @@ export default function Meditation() {
               <li key={category.name}>
                 <button
                   onClick={() => setSelectedCategory(category)}
-                  className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors ${
-                    selectedCategory.name === category.name
+                  className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors ${selectedCategory.name === category.name
                       ? 'bg-gray-200 text-gray-800'
                       : 'hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
                   <category.icon className="w-5 h-5" />
                   <span>{category.name}</span>
@@ -88,7 +88,7 @@ export default function Meditation() {
         </nav>
       </header>
 
-      <section className={`rounded-2xl my-4 py-16 bg-gradient-to-r ${selectedCategory.theme.gradient}`}>
+      <section className={`shadow-sm border border-white rounded-2xl my-4 py-16 bg-gradient-to-r ${selectedCategory.theme.gradient}`}>
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
 
@@ -101,20 +101,22 @@ export default function Meditation() {
               </p>
             </div>
 
-            <BreathingExercise/>
+            <BreathingExercise />
           </div>
         </div>
       </section>
 
-      <section>
+      <MusicPlayer />
+
+      <section className='mb-8'>
         <h2 className="text-3xl mt-8 font-semibold mb-6">Get Relaxed</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {meditations.map((meditation) => (
             <div
               key={meditation.title}
               style={{ backgroundColor: meditation.bgColor }} // Set background color inline
-              className="rounded-xl cursor-pointer shadow-md overflow-hidden transition-transform hover:scale-105"
-              onClick={()=>navigate(`/meditation/${meditation.id}`) }
+              className="rounded-xl border border-white cursor-pointer shadow-md overflow-hidden transition-transform hover:scale-105"
+              onClick={() => navigate(`/meditation/${meditation.id}`)}
             >
               <img
                 src={meditation.image}
@@ -130,5 +132,37 @@ export default function Meditation() {
         </div>
       </section>
     </main>
+  );
+}
+
+export function MusicPlayer() {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioSrc = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
+  const audioRef = useRef(null);
+
+  const togglePlayPause = () => {
+    if (!audioRef.current) return;
+    if (isPlaying) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  return (
+    <div className="flex items-center justify-center p-6 bg-gray-800 rounded-lg shadow-lg text-white space-x-4">
+      <button
+        onClick={togglePlayPause}
+        className={`p-3 rounded-full focus:outline-none transition-transform duration-300
+          ${isPlaying ? 'bg-white text-black animate-pulse scale-110' : 'bg-gray-700 hover:bg-gray-600'}`}
+      >
+        {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
+      </button>
+      <span className="text-lg font-semibold">
+        {isPlaying ? "Playing" : "Paused"}
+      </span>
+      {audioSrc && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />}
+    </div>
   );
 }

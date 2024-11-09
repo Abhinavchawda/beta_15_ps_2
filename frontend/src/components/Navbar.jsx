@@ -1,16 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
-import {signOut} from "../redux/UserReducer"
+import { signOut } from "../redux/UserReducer"
 import axios from "axios"
-import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import { Button } from "flowbite-react"
 import {
     Disclosure,
     DisclosureButton,
     DisclosurePanel,
-    Menu,
-    MenuButton,
-    Transition,
 } from '@headlessui/react'
 import { MenuIcon, UserIcon, XIcon } from 'lucide-react/dist/cjs/lucide-react';
 
@@ -20,12 +16,12 @@ function classNames(...classes) {
 
 const Navbar = () => {
     const navigation = [
-    { name: 'Home', link: '/' },
-    { name: 'About', link: '/about' },
-    { name: 'Community Chat', link: '/chat' },
-    { name: 'Journal Entry', link: '/journal' },
-    { name: 'Meditation', link: '/meditate' }
-]
+        { name: 'Home', link: '/' },
+        { name: 'About', link: '/about' },
+        { name: 'Community Chat', link: '/chat' },
+        { name: 'Journal Entry', link: '/journal' },
+        { name: 'Meditation', link: '/meditate' }
+    ]
 
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state?.user?.currentUser)
@@ -50,23 +46,22 @@ const Navbar = () => {
                                             >
                                                 {item.name}
                                             </Link>
-                                            
                                             )
                                             )}
                                             {
-                        currentUser ?
-                        <Button onClick={()=>{
-                            axios
-                            .get("/api/v1/user/logout")
-                            .then(()=>dispatch(signOut()))
-                        }} to="/user/authenticate" className="bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        Logout
-                        </Button>
-                        :
-                        <Link to="/user/authenticate" className="bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-all duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500">
-                            Sign In
-                        </Link>
-                    }
+                                                currentUser ?
+                                                    <button onClick={() => {
+                                                        axios
+                                                            .get("/api/v1/user/logout")
+                                                            .then(() => dispatch(signOut()))
+                                                    }} to="/user/authenticate" className="bg-white text-black px-2 py-1 hover:scale-105 ml-4 rounded-md font-medium transition-all duration-300">
+                                                        Logout
+                                                    </button>
+                                                    :
+                                                    <Link to="/user/authenticate" className="bg-white text-black px-2 py-1 hover:scale-105 ml-4 rounded-md font-medium transition-all duration-300">
+                                                        Sign In
+                                                    </Link>
+                                            }
                                         </div>
                                     </div>
                                 </div>

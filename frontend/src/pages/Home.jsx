@@ -39,35 +39,36 @@ export default function LandingPage() {
 
   return (
     <main className={`min-h-screen ${theme.bg} ${theme.text} pb-16`}>
-      <section className={`relative h-[80vh] flex items-center justify-center text-center ${theme.bg} ${theme.text} bg-gradient-to-l`}>
-          <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center">
-              <img src="/homeImage2.png" className="h-28 w-28 mb-8 animate-pulse" />
-              <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-xl">
-                  Your Path to Inner Peace
-              </h1>
-              <p className="text-xl md:text-2xl mb-8 drop-shadow-md">
-                  Discover resources, games, and meditations to nurture your mental well-being
-              </p>
-              {currentUser ? (
-                  <Dropdown label={mood}>
-                      {moods.map((m, index) => (
-                          <Dropdown.Item key={index} onClick={() => setMood(m)}>
-                              {m}
-                          </Dropdown.Item>
-                      ))}
-                  </Dropdown>
-              ) : (
-                  <Button
-                      className={`mt-8 ${theme.button} text-white font-medium py-2 px-6 rounded-md transition duration-300`}
-                      onClick={() => {
-                          navigate("/user/authenticate");
-                      }}
-                  >
-                      Start Your Journey
-                  </Button>
-              )}
-          </div>
+      <section className={`relative h-[80vh] flex items-center justify-center text-center ${theme.bg} ${theme.text} bg-gradient-to-tl`}>
+        <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center">
+          <img src="/homeImage2.png" className="h-28 w-28 mb-8 animate-pulse" />
+          <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-xl">
+            Your Path to Inner Peace
+          </h1>
+          <p className="text-xl md:text-2xl mb-8 drop-shadow-md">
+            Discover resources, games, and meditations to nurture your mental well-being
+          </p>
+          {currentUser ? (
+            <Dropdown label={mood}>
+              {moods.map((m, index) => (
+                <Dropdown.Item key={index} onClick={() => setMood(m)}>
+                  {m}
+                </Dropdown.Item>
+              ))}
+            </Dropdown>
+          ) : (
+            <Button
+              className={`mt-8 ${theme.button} text-white font-medium py-2 px-6 rounded-md transition duration-300`}
+              onClick={() => {
+                navigate("/user/authenticate");
+              }}
+            >
+              Start Your Journey
+            </Button>
+          )}
+        </div>
       </section>
+      <Joke />
       <section className="py-16 lg:px-10">
         <div className="container mx-auto px-10 shadow-lg py-6 rounded-2xl bg-white">
           <h2 className={`text-5xl font-bold text-center mb-12 ${theme.text}`}>
@@ -147,7 +148,6 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <Joke />
       <div className="my-24"></div>
       <div
         className={`text-6xl my-10 flex justify-center items-center font-bold ${theme.text}`}

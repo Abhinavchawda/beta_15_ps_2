@@ -23,10 +23,10 @@ const Joke = () => {
   }, [])
 
   return (
-    <div className="container mx-auto max-w-lg my-8 p-8 bg-white rounded-2xl shadow-md text-center">
+    <div className="container mx-auto max-w-lg mt-12 my-8 md:w-[80%] p-8 bg-white rounded-2xl shadow-md text-center">
       <div className="flex justify-center items-center mb-6 text-indigo-500">
-        <Smile size={32} />
-        <h2 className="text-3xl font-semibold text-gray-800 ml-2">Need a Laugh?</h2>
+        {/* <Smile size={32} /> */}
+        <h2 className="text-3xl font-semibold text-gray-800 ml-2">😆Need a Laugh?</h2>
       </div>
 
       {loading ? (
