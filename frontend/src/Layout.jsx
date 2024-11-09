@@ -1,11 +1,9 @@
-
+// import Games from "./pages/Games"
+import React from "react"
+import { Outlet } from "react-router-dom"
 
 const Layout = () => {
-  return (
-    <div>
-      App
-    </div>
-  )
+  return <Outlet/>
 }
 
 export default Layout
