@@ -15,7 +15,7 @@ import {
 
 import Meditation from './components/Meditation.jsx'
 import MeditationDetail from './pages/MeditationDetail.jsx'
-import Chat from './pages/chat.jsx'
+import ChatRoom from "./pages/Chatroom.jsx"
 import Layout from './Layout'
 import Wordle from './pages/Wordle'
 import AuthForm from './components/AuthForm.jsx'
@@ -27,7 +27,7 @@ const router = createBrowserRouter(
         <Route path="/" element={<Layout />}>
             <Route path="" element={<Home />}/>
             {/* <Route path="landing" element={<Landing />}/> */}
-            <Route path="chat" element={<Chat />}/>
+            <Route path="chat" element={<ChatRoom />}/>
             <Route path="meditate" element={<Meditation />}/>
             <Route path="user/authenticate" element={<AuthForm />}/>
             <Route path="about" element={<About />}/>

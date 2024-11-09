@@ -1,5 +1,5 @@
-import { Moon, Heart, Zap, Wind } from 'lucide-react';
-import BreathingExercise from '../components/BreathingExercise';
+import { Moon, Heart, Zap, Wind } from 'lucide-react'
+import BreathingExercise from '../components/BreathingExercise'
 
 // Define categories and meditations arrays
 const categories = [
