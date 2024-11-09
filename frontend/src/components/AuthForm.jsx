@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import axios from "axios"
 import Input from "./Input"
 import { useState } from "react"
+import { useNavigate } from "react-router-dom"
 
 const AuthForm = () => {
+    const navigate = useNavigate()
     const { register, handleSubmit, setValue, formState } = useForm({
         defaultValues: {
             username: "",
@@ -19,10 +21,34 @@ const AuthForm = () => {
             <form 
                 noValidate 
                 onSubmit={handleSubmit(formData => {
-                    console.log(formData)
-                    setValue("username", "")
-                    setValue("email", "")
-                    setValue("password", "")
+                    if (isLoginForm){
+                        axios
+                        .post("/api/v1/user/login", {
+                            username: formData.username,
+                            password: formData.password
+                        })
+                        .then(response => {
+                            // Update state of user locally
+                            console.log(response)
+                        })
+                        .catch(error => console.error(error))
+                        .finally(()=>{
+                            navigate("/")
+                        })
+                    }
+                    else{
+                        axios
+                        .post("/api/v1/user/register", {
+                            username: formData.username,
+                            email: formData.email,
+                            password: formData.password
+                        })
+                        .then(response => console.log(response))
+                        .catch(error => console.error(error))
+                        .finally(()=>{
+                            location.reload()
+                        })
+                    }
                 })}
                 className="w-full max-w-md bg-white p-8 rounded-lg shadow-md"
             >

@@ -6,3 +6,4 @@ export const COOKIE_OPTIONS = {
 }
 export const HASHING_ROUNDS = 10
 export const DB_NAME="DB"
+export const accessTokenExpiry = "1d"
