@@ -185,3 +185,42 @@ export const updateAccountDetails = asyncWrapper(async (req, res) => {
         })
     )
 })
+
+
+export const getTopScore = asyncWrapper(async (req,res)=>{
+    const response = await User.find({}).sort('-score').limit(10);
+    console.log(data);
+    if(!response){
+        throw new ApiError({
+            statusCode: 400,
+            message: data.message ,
+        })
+    }
+    else{
+        return res.status(200).json(
+            new ApiResponse({
+                statusCode: 200,
+                message: "Account details updated successfully",
+                data: data
+            })
+        )
+    }
+})
+
+const getTopStreak = asyncWrapper(async(req,res)=> {
+    const result = await User.find({}).sort('-streak_count').limit(10);
+    console.log(data);
+    if(!result){
+        throw new ApiError({
+            statusCode : 400,
+            message:"Wrong in getTopStreak",
+        })
+    }
+    return res.status(200).json(
+        new ApiResponse({
+            statusCode:200,
+            message:"The top 10 streak holders has been sent to the frontend",
+            data:data
+        })
+    )
+})
