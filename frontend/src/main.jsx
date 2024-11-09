@@ -13,8 +13,9 @@ import {
   RouterProvider
 } from "react-router-dom"
 
-import Meditate from "./pages/Meditate"
-import Chat from "./pages/Chat"
+import Meditation from './components/Meditation.jsx'
+import MeditationDetail from './pages/MeditationDetail.jsx'
+import Chat from './pages/chat.jsx'
 import Layout from './Layout'
 import Wordle from './pages/Wordle'
 import AuthForm from './components/AuthForm.jsx'
@@ -27,13 +28,14 @@ const router = createBrowserRouter(
             <Route path="" element={<Home />}/>
             {/* <Route path="landing" element={<Landing />}/> */}
             <Route path="chat" element={<Chat />}/>
-            <Route path="meditate" element={<Meditate />}/>
+            <Route path="meditate" element={<Meditation />}/>
             <Route path="user/authenticate" element={<AuthForm />}/>
             <Route path="about" element={<About />}/>
             <Route path="journal" element={<Journal />}/>
             <Route path="game/" element={<Outlet />}>
               <Route path="wordle" element={<Wordle />}/>
             </Route>
+            <Route path="meditation/:id" element={<MeditationDetail/>}/>
         </Route>
     )
 )
