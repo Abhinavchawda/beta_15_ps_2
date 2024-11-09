@@ -84,7 +84,7 @@ const games = [
 const Games = () => {
   return (
     <div className="mx-auto px-4 py-8">
-      <div className="flex justify-center gap-8">
+      <div className="flex flex-wrap justify-center gap-8">
         {games.map((game, index) => (
           <GameCard key={index} game={game} />
         ))}
@@ -97,7 +97,7 @@ export default Games;
 
 export const GameCard = ({ game }) => {
   return (
-    <div className={`border border-black max-w-sm mx-auto bg-gradient-to-r ${game.themeColor} rounded-2xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl`}>
+    <div className={`border border-black max-w-sm mx-auto bg-gradient-to-r ${game.themeColor} rounded-2xl shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl my-8`}>
       <img 
         src={game.image} 
         alt={game.name} 
