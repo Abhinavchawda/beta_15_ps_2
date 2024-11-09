@@ -1,23 +1,43 @@
-import React, { useState } from 'react'
 import { useForm } from 'react-hook-form'
+import axios from "axios"
+import {useSelector} from "react-redux"
+import {useNavigate} from "react-router-dom"
+import { useState, useEffect } from 'react'
 
 const Journal = () => {
-  const [entries, setEntries] = useState([])
-  const { register, handleSubmit, reset } = useForm()
+  const currentUser = useSelector(state => state?.user?.currentUser)
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      content: ""
+    }
+  })
+  const navigate = useNavigate()
+  const [journals, setJournals] = useState([])
+  useEffect(()=>{
+    axios.post("/api/v1/journal/recent",{
+      userId: currentUser?._doc?._id
+    }).then(response => {
+      console.log(response)
+      // setJournals()
+    }).catch(error => console.error(error))
+  },[])
 
-  const onSubmit = (data) => {
-    const entryWithTimestamp = { ...data, timestamp: new Date().toLocaleString() }
-    setEntries([entryWithTimestamp, ...entries])
-    reset()
-  }
-
+  if (!currentUser)
+    return navigate("/")
   return (
     <div className="container mb-8 mx-auto mt-8 max-w-2xl p-6 bg-gradient-to-r from-blue-50 via-teal-100 to-slate-100 rounded-xl shadow-lg">
       <h1 className="text-4xl font-semibold text-center text-gray-800 mb-8">Journal Entry</h1>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="mb-10">
+      <form onSubmit={handleSubmit(formData=>{
+        axios
+        .post("/api/v1/journal/create", {
+          userId: currentUser?._doc?._id,
+          content: formData.content
+        })
+        .then(()=>alert("Journal saved successfully"))
+        .catch(error => console.error(error.message))
+      })} className="mb-10">
         <textarea
-          {...register("entry", { required: true })}
+          {...register("content", { required: true })}
           className="w-full h-48 p-4 text-gray-700 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none placeholder-gray-400 shadow-sm"
           placeholder="Speak up your thoughts..."
         />
@@ -28,21 +48,6 @@ const Journal = () => {
           Save Entry
         </button>
       </form>
-
-      <h2 className="text-2xl font-semibold text-gray-700 mb-4">Your Entries</h2>
-
-      {entries.length === 0 ? (
-        <p className="text-gray-500 text-center">No entries yet. Start writing your thoughts!</p>
-      ) : (
-        <ul className="space-y-6">
-          {entries.map((entry, index) => (
-            <li key={index} className="p-5 bg-white rounded-lg border border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200">
-              <p className="text-lg text-gray-800 mb-3">{entry.entry}</p>
-              <p className="text-sm text-gray-400">Written on: {entry.timestamp}</p>
-            </li>
-          ))}
-        </ul>
-      )}
     </div>
   )
 }
