@@ -55,7 +55,7 @@ const BreathingExercise = () => {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 p-2">
+    <div className="flex flex-col items-center justify-center space-y-4 rounded p-4 min-h-[30vh] w-fit mx-auto shadow-lg gap-3">
       <h1 className="text-2xl font-semibold">Breathing Exercise</h1>
       {isSessionActive ? (
         <div className="text-xl">
@@ -69,9 +69,19 @@ const BreathingExercise = () => {
       )}
       <button
         onClick={(e) => { isSessionActive ? stopSession() : startSession() }}
-        className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl"
+        className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl w-full"
       >
-        {isSessionActive ? <CirclePause /> : <CirclePlay />}
+        <div className="flex justify-around">
+          {isSessionActive ? <CirclePause /> : <CirclePlay />}
+          <span>
+            {
+              isSessionActive ?
+              "Replay"
+              :
+              "Play"
+            }
+          </span>
+        </div>
       </button>
     </div>
   )
