@@ -32,6 +32,9 @@ const UserSchema = new mongoose.Schema(
         score: {
             type: Number,
             default: 0
+        },
+        lastMeditatedOn: {
+            type: Date
         }
     },
     { timestamps: true }

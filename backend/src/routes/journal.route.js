@@ -1,7 +1,8 @@
-import { Router } from "express";
-import {createJournal, recentJournal} from '../controllers/journal.controller.js'
-const router = Router();
+import { Router } from "express"
+import {createJournal, lastTenJournals} from '../controllers/journal.controller.js'
+const router = Router()
 
-router.post('/createjournal',createJournal);
-router.get('/recentjournal',recentJournal);
-export default router;
+router.post('/create',createJournal)
+router.post('/recent',lastTenJournals)
+
+export default router

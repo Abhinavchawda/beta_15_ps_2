@@ -19,7 +19,7 @@ export const createJournal = asyncWrapper(async(req,res)=>{
     })))
 })
 
-export const recentJournal = asyncWrapper(async(req,res)=>{
+export const lastTenJournals = asyncWrapper(async(req,res)=>{
     const {userId} = req.body;
     const data = await Journal.find({userId}).sort('-createdAt').limit(10);
     if(!data){

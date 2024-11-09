@@ -4,7 +4,7 @@ import dotenv from "dotenv"
 import JournalRouter from './routes/journal.route.js'
 dotenv.config()
 import {jsonFileSizeLimit, apiUrlPrefix} from "./constants.js"
-import {UserRouter} from "./routes/index.js"
+import {UserRouter, JournalRouter} from "./routes/index.js"
 
 const app = express()
 
