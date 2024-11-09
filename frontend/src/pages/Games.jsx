@@ -62,25 +62,25 @@ const games = [
     name: 'Wordle',
     details: 'A fun puzzle game to improve your brain power and logic.',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRU8utVUpqhnpX6tS5NxbSM_8GGa_SIR-DKMw&s', // Replace with actual game image URL
-    themeColor: 'from-red-400 to-red-200', // Sudoku gradient theme
+    themeColor: 'from-red-600 to-red-400', // Sudoku gradient theme
     url: "http://localhost:5173/game/wordle"
   },
   {
     name: 'Memory leak',
     details: 'Classic strategy game to challenge your mind and skills.',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3POkpavwlEXMtAHXzSten2yEYo1aSRhIEMQ&s', // Replace with actual game image URL
-    themeColor: 'from-green-400 to-green-200', // Chess gradient theme
-    url: "http://localhost:5173/game/simon"
-  },
-  {
-    name: 'Word Search',
-    details: 'Find hidden words in a grid to exercise your vocabulary.',
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToPiOl1_3ncneEfBtsT95ESEQiQavOkZ0mQ&s', // Replace with actual game image URL
-    themeColor: 'from-blue-400 to-blue-200', // Word Search gradient theme
+    themeColor: 'from-green-600 to-green-400', // Chess gradient theme
     url: "http://localhost:5173/game/simon"
   },
 ];
 
+// {
+//   name: 'Word Search',
+//   details: 'Find hidden words in a grid to exercise your vocabulary.',
+//   image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSToPiOl1_3ncneEfBtsT95ESEQiQavOkZ0mQ&s', // Replace with actual game image URL
+//   themeColor: 'from-blue-400 to-blue-200', // Word Search gradient theme
+//   url: "http://localhost:5173/game/simon"
+// },
 const Games = () => {
   return (
     <div className="mx-auto px-4 py-8">
@@ -107,8 +107,8 @@ export const GameCard = ({ game }) => {
         <h3 className="text-2xl font-semibold text-white mb-1">{game.name}</h3>
         <p className="text-white text-sm">{game.details}</p>
       </div>
-      <div className="pl-2 py-2 bg-gray-100">
-        <button className="bg-[rgb(16,20,61)] hover:bg-blue-700 rounded-xl text-white px-4 py-2 shadow-md  transition-colors">
+      <div className="pl-2 py-4 bg-gray-100 flex justify-center items-center">
+        <button className="bg-[rgb(16,20,61)] hover:bg-blue-700 rounded-md text-white px-4 py-2 shadow-md  transition-colors">
           <a href={`${game.url}`}>Play Now</a>
         </button>
       </div>

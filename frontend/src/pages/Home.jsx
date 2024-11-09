@@ -7,7 +7,7 @@ import { Button } from "flowbite-react"
 export default function LandingPage() {
     const navigate = useNavigate()
     return (
-        <main className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-50 text-gray-800">
+        <main className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-50 text-gray-800 pb-16">
                 {/* Hero Section */}
                 <section className="relative h-[80vh] flex items-center justify-center text-center text-white bg-gradient-to-r from-blue-300 via-teal-400 to-blue-600">
                     <img
@@ -16,6 +16,9 @@ export default function LandingPage() {
                         className="absolute inset-0 object-cover w-full h-full opacity-40"
                     />
                     <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center">
+                        <div>
+                            <img src="/homeImage2.png" className="h-28 w-28 mb-8 animate-pulse"></img>
+                        </div>
                         <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-xl">
                             Your Path to Inner Peace
                         </h1>
@@ -71,6 +74,9 @@ export default function LandingPage() {
                     </div>
                 </section>
                 <Joke />
+
+                <div className="my-24"></div>                
+                <div className="text-6xl my-10 flex justify-center items-center font-bold text-bg-[rgb(20,20,20)]">Mindful Games</div>
                 <Games/>
         </main>
     )

@@ -2,6 +2,7 @@ import { Moon, Heart, Zap, Wind } from 'lucide-react'
 import BreathingExercise from '../components/BreathingExercise'
 
 import { useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const categories = [
   { name: 'Sleep', icon: Moon, theme: { bgColor: 'bg-blue-100', textColor: 'text-blue-900', gradient: 'from-blue-300 via-blue-100 to-blue-50' } },
@@ -12,36 +13,42 @@ const categories = [
 
 const meditations = [
   {
+    id: 1,
     title: 'Mindful Breathing',
     duration: '10 min',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSNB-DiOLHIyMAQSXs3U1mrBWhn4Ga2-ubaqQ&s',
     bgColor: 'rgb(255,154,118)', // Vibrant Orange
   },
   {
+    id: 2,
     title: 'Laughter time',
     duration: '15 min',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1rPMlS8_FhnYxhQy1LsUQ1iKOngPnUv4Fgw&s',
     bgColor: 'rgb(255,209,220)', // Pastel Pink
   },
   {
+    id: 3,
     title: 'Guided Visualization',
     duration: '20 min',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNZl3zTskLhCQP4SZTcuqtRi88Z2QGddTapw&s',
     bgColor: 'rgb(174,225,225)', // Pastel Blue
   },
   {
+    id: 4,
     title: 'Progressive Relaxation',
     duration: '30 min',
     image: 'https://images.squarespace-cdn.com/content/v1/5fa5ec79661ee904d2973ca0/1608218991352-VVQ4O65NM06XBN9F01ML/relaxing_photo_1.jpg?format=1500w',
     bgColor: 'rgb(224,224,224)', // Light Gray
   },
   {
+    id: 5,
     title: 'Focused Attention',
     duration: '10 min',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRF_AUbIWk4x_aNHNTZ4j-CGDLHK1IkjSLpZA&sy',
     bgColor: 'rgb(193,225,193)', // Pastel Green
   },
   {
+    id: 6,
     title: 'Calming Sounds',
     duration: '12 min',
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJs3sShikiCyiefF80i56MTO8zhgbOqs6AA&s',
@@ -52,8 +59,9 @@ const meditations = [
 export default function Meditation() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
+  const navigate = useNavigate();
   return (
-    <main className={`min-h-screen ${selectedCategory.theme.bgColor} ${selectedCategory.theme.textColor} p-8 md:px-16`}>
+    <main className={`min-h-screen ${selectedCategory.theme.bgColor} ${selectedCategory.theme.textColor} p-8 md:px-16 pb-20`}>
       {/* Header Section */}
       <header className="mb-12">
         <nav className="flex flex-wrap gap-4 justify-between items-center bg-slate-400 p-2 pl-6 rounded-2xl">
@@ -106,13 +114,14 @@ export default function Meditation() {
 
       {/* Main Content Section */}
       <section>
-        <h2 className="text-3xl mt-8 font-semibold mb-6">{selectedCategory.name} Meditations</h2>
+        <h2 className="text-3xl mt-8 font-semibold mb-6">Get Relaxed</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {meditations.map((meditation) => (
             <div
               key={meditation.title}
               style={{ backgroundColor: meditation.bgColor }} // Set background color inline
               className="rounded-xl cursor-pointer shadow-md overflow-hidden transition-transform hover:scale-105"
+              onClick={()=>navigate(`/meditation/${meditation.id}`) }
             >
               <img
                 src={meditation.image}
@@ -127,9 +136,6 @@ export default function Meditation() {
           ))}
         </div>
       </section>
-      <div className='my-8 shadow p-2'>
-        <BreathingExercise />
-      </div>
     </main>
   );
 }
