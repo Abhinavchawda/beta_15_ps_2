@@ -23,22 +23,22 @@ const features = [
 
 const About = () => {
   return (
-    <section className="bg-white py-16 px-4 md:px-8 lg:px-16 text-gray-800">
-      <div className="max-w-4xl mx-auto text-center">
-        <h2 className="text-3xl font-semibold mb-4">About Us</h2>
-        <p className="text-lg text-gray-600 mb-8">
-          Welcome to our mental wellness platform, dedicated to helping you achieve a balanced mind and body. Our tools and resources are designed with care to support your mental well-being, one step at a time.
+    <section className="bg-gray-100 py-16 px-6 md:px-12 lg:px-20 text-gray-700">
+      <div className="max-w-5xl mx-auto text-center">
+        <h2 className="text-4xl font-semibold text-gray-800 mb-6">About Us</h2>
+        <p className="text-lg text-gray-600 mb-12 leading-relaxed">
+          Welcome to our mental wellness platform, dedicated to helping you achieve a balanced mind and body. Our tools and resources are thoughtfully designed to support your mental well-being, one step at a time.
         </p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-2 gap-6">
           {features.map((feature, index) => (
             <div
               key={index}
-              className="bg-gray-50 p-6 rounded-xl shadow-sm flex flex-col items-center text-center hover:bg-gray-100 hover:scale-105 transition-all"
+              className="bg-white p-8 rounded-lg shadow-md flex flex-col items-center text-center transition-transform transform hover:-translate-y-2 hover:shadow-lg"
             >
-              <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-medium mb-2">{feature.title}</h3>
-              <p className="text-gray-500">{feature.description}</p>
+              <div className="text-5xl mb-4 text-blue-500">{feature.icon}</div>
+              <h3 className="text-2xl font-semibold text-gray-800 mb-3">{feature.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
