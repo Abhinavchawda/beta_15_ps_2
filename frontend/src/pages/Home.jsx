@@ -11,8 +11,8 @@ export default function LandingPage() {
                 {/* Hero Section */}
                 <section className="relative h-[80vh] flex items-center justify-center text-center text-white bg-gradient-to-r from-blue-300 via-teal-400 to-blue-600">
                     <img
-                        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJHUsh-icHtOAW60fGT9zqVbKDSias-2eORA&s"
-                        alt="Serene nature scene"
+                        src=""
+                        alt=""
                         className="absolute inset-0 object-cover w-full h-full opacity-40"
                     />
                     <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center">
@@ -30,7 +30,7 @@ export default function LandingPage() {
                     </div>
                 </section>
 
-                <section className="py-16 lg:px-10 bg-gray-50">
+                <section className="py-16 lg:px-10">
                     <div className="container mx-auto px-10 shadow-lg py-6 rounded-2xl">
                         <h2 className="text-5xl font-bold text-center mb-12 text-[rgb(16,20,61)]">Understanding Mental Wellness</h2>
                         <div className="grid md:grid-cols-2 gap-10 items-center">
