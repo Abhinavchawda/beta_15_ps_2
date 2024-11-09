@@ -7,7 +7,7 @@ const socket = io("http://localhost:3000", {
   withCredentials: true
 })
 
-const ChatRoom = () => {
+const Chat = () => {
   const [username, setUsername] = useState("")
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState([])
@@ -175,4 +175,4 @@ const ChatRoom = () => {
   )
 }
 
-export default ChatRoom
+export default Chat
