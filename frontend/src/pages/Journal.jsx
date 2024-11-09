@@ -12,7 +12,7 @@ const Journal = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 max-w-2xl p-6 bg-gradient-to-r from-blue-50 via-teal-100 to-slate-100 rounded-xl shadow-lg">
+    <div className="container mb-8 mx-auto mt-8 max-w-2xl p-6 bg-gradient-to-r from-blue-50 via-teal-100 to-slate-100 rounded-xl shadow-lg">
       <h1 className="text-4xl font-semibold text-center text-gray-800 mb-8">Journal Entry</h1>
 
       <form onSubmit={handleSubmit(onSubmit)} className="mb-10">

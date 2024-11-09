@@ -1,5 +1,5 @@
-import React from 'react';
 import { Moon, Heart, Zap, Wind } from 'lucide-react';
+import BreathingExercise from '../components/BreathingExercise';
 
 // Define categories and meditations arrays
 const categories = [
@@ -31,7 +31,7 @@ const meditations = [
   {
     "title": "Progressive Relaxation",
     "duration": "30 min",
-    "image": "/placeholder.svg?height=200&width=200",
+    "image": "https://images.squarespace-cdn.com/content/v1/5fa5ec79661ee904d2973ca0/1608218991352-VVQ4O65NM06XBN9F01ML/relaxing_photo_1.jpg?format=1500w",
     "bgColor": "rgb(224,224,224)"  // Light Gray
   },
   {
@@ -51,8 +51,7 @@ const meditations = [
 
 export default function Meditation() {
   return (
-    <div className="min-h-screen bg-blue-50 text-gray-800 p-8 md:px-16">
-
+    <main className="min-h-screen bg-blue-50 text-gray-800 p-8 md:px-16">
       {/* Header Section */}
       <header className="mb-12">
         <nav className="flex justify-between items-center bg-slate-300 p-2 pl-6 rounded-2xl">
@@ -87,9 +86,6 @@ export default function Meditation() {
               <p className="text-gray-700 mb-8 text-lg leading-relaxed">
                 Meditation is a powerful tool for reducing stress, improving focus, and promoting overall well-being. Our guided meditations are designed to help you cultivate mindfulness and inner peace in your daily life.
               </p>
-              {/* <button className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-3 px-8 rounded-xl shadow-lg transition-transform duration-300 transform hover:scale-105">
-                                Start Meditating
-                            </button> */}
             </div>
 
             {/* Right Image */}
@@ -105,14 +101,14 @@ export default function Meditation() {
       </section>
 
       {/* Main Content Section */}
-      <main>
+      <section>
         <h2 className="text-3xl mt-8 font-semibold mb-6">Inner Peace Meditations</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
           {meditations.map((meditation) => (
             <div
               key={meditation.title}
               style={{ backgroundColor: meditation.bgColor }} // Set background color inline
-              className="rounded-xl shadow-md overflow-hidden transition-transform hover:scale-105"
+              className="rounded-xl cursor-pointer shadow-md overflow-hidden transition-transform hover:scale-105"
             >
               <img
                 src={meditation.image}
@@ -126,7 +122,10 @@ export default function Meditation() {
             </div>
           ))}
         </div>
-      </main>
-    </div>
+      </section>
+      <div className='my-8 shadow p-2'>
+        <BreathingExercise />
+      </div>
+    </main>
   )
 }
