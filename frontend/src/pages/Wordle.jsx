@@ -100,6 +100,7 @@ const Wordle = () => {
     const [counter, setCounter] = useState(0)
     const [tries, setTries] = useState(0)
     const [won, setWon] = useState(false)
+    const [currWord, setCurrWord] = useState("")
     let index = useMemo(()=>Math.floor(Math.random() * wordsWithHints.length),[])
     const wordOfDay = useMemo(()=>wordsWithHints[index].word,[])
     const hint = useMemo(()=>wordsWithHints[index].wordHint,[])
@@ -112,8 +113,10 @@ const Wordle = () => {
             if (e.key === 'Enter') {
                 CheckWord()
             } else if (e.key === 'Backspace') {
+                setCurrWord(prev => prev.substring(0,prev.length-2))
                 Back()
             } else if (/^[a-zA-Z]$/.test(e.key)) {
+                setCurrWord(prev => prev+e.key.toLowerCase())
                 InsertLetter(e.key.toUpperCase())
             }
         }
@@ -122,21 +125,14 @@ const Wordle = () => {
     }, [counter, tries, won, wordOfDay])
 
     function CheckWord() {
-        let i, index = tries*cols, currWord = ""
-
-        for (i = index; i < index+cols; i++){
-            currWord += gridsRef.current[i].textContent
-        }
-        currWord = currWord.toLowerCase()
         console.log(currWord)
-
         if (currWord === wordOfDay){
             setWon(true)
             setTimeout(() => {
                 alert("You won")
-                reload()
+                location.reload()
             }, 1000);
-        }
+        } else setCurrWord("")
 
         setTries(prev => prev+1)
     }
@@ -158,10 +154,10 @@ const Wordle = () => {
     }
 
     useEffect(() => {
-        if (!won && tries === rows) {
+        if (!won && tries === rows+1) {
             setTimeout(() => {
                 alert("You lost!")
-                window.location.reload()
+                location.reload()
             }, 1000)
         }
     }, [tries, won])
