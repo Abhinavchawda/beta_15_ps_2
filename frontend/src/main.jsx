@@ -1,9 +1,9 @@
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { store , persistor} from './redux/Store.jsx'
-import App from './App.jsx'
+import { store , persistor} from './redux/Store.js'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import Home from "./pages/Home"
 
 import {
   createBrowserRouter,
@@ -21,7 +21,7 @@ import Wordle from './pages/Wordle'
 const router = createBrowserRouter(
     createRoutesFromElements(
         <Route path="/" element={<Layout />}>
-            {/* <Route path="" element={<Home />}/> */}
+            <Route path="" element={<Home />}/>
             {/* <Route path="landing" element={<Landing />}/> */}
             <Route path="chat" element={<Chat />}/>
             <Route path="meditate" element={<Meditate />}/>

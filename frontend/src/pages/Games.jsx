@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import LeaderboardWin from '../components/LeaderboardWin';
+// import LeaderboardWin from '../components/LeaderboardWin';
 import { Button } from 'flowbite-react';
 
 export default function Games() {
