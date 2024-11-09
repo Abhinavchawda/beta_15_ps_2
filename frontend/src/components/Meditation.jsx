@@ -3,6 +3,7 @@ import BreathingExercise from '../components/BreathingExercise'
 
 import { useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useSelector } from "react-redux"
 
 const categories = [
   { name: 'Sleep', icon: Moon, theme: { bgColor: 'bg-blue-100', textColor: 'text-blue-900', gradient: 'from-blue-300 via-blue-100 to-blue-50' } },
@@ -59,13 +60,16 @@ const meditations = [
 export default function Meditation() {
   const [selectedCategory, setSelectedCategory] = useState(categories[0]);
 
+  const currentUser = useSelector(state => state);
+  console.log("user", currentUser)
+
   const navigate = useNavigate();
   return (
     <main className={`min-h-screen ${selectedCategory.theme.bgColor} ${selectedCategory.theme.textColor} p-8 md:px-16 pb-20`}>
       {/* Header Section */}
       <header className="mb-12">
         <nav className="flex flex-wrap gap-4 justify-between items-center bg-slate-400 p-2 pl-6 rounded-2xl">
-          <div className="text-4xl font-semibold">Hello, User</div>
+          <div className="text-4xl font-semibold">Hello, {currentUser.user.currentUser.user.username}</div>
           <ul className="flex flex-wrap space-x-6">
             {categories.map((category) => (
               <li key={category.name}>
