@@ -1,3 +1,4 @@
+import { CirclePause, CirclePlay } from "lucide-react/dist/cjs/lucide-react";
 import React, { useState, useEffect } from "react";
 
 const BreathingExercise = () => {
@@ -48,8 +49,13 @@ const BreathingExercise = () => {
     setTimeLeft(getPhaseDuration("Breath In"));
   };
 
+  const stopSession = () => {
+    setIsSessionActive(false);
+    setCycleCount(0);
+  };
+
   return (
-    <div className="flex flex-col items-center justify-center space-y-4 p-4">
+    <div className="flex flex-col items-center justify-center space-y-4 p-2">
       <h1 className="text-2xl font-semibold">Breathing Exercise</h1>
       {isSessionActive ? (
         <div className="text-xl">
@@ -62,10 +68,10 @@ const BreathingExercise = () => {
         </div>
       )}
       <button
-        onClick={startSession}
-        className="bg-blue-500 text-white py-2 px-4 rounded-md"
+        onClick={(e) => { isSessionActive ? stopSession() : startSession() }}
+        className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl"
       >
-        Start Session
+        {isSessionActive ? <CirclePause /> : <CirclePlay />}
       </button>
     </div>
   );
