@@ -6,7 +6,7 @@ function Simon() {
   const [level, setLevel] = useState(0);
   const [start, setStart] = useState(false);
   const [showRules, setShowRules] = useState(false);
-
+  const [userLevel,setUserLevel] = useState(0);
   const colors = ["blue", "green", "yellow", "red", "orange", "pink"];
 
   useEffect(() => {
@@ -15,46 +15,41 @@ function Simon() {
     }
   }, [start]);
 
-  useEffect(() => {
-    if (userSequence.length > 0) {
-      checkPattern(userSequence.length - 1);
-    }
-  }, [userSequence]);
-
   const nextPattern = () => {
-    setLevel(prevLevel => prevLevel + 1);
+    setLevel(level + 1);
+    setUserLevel(0);
     setUserSequence([]);
     const random = Math.floor(Math.random() * colors.length);
-    const newSequence = [...gameSequence, colors[random]];
-    setGameSequence(newSequence);
-    playSound(colors[random]);
+    const new1Sequence = [...gameSequence, colors[random]];
+    console.log("in next Pattern sequence for game is ",new1Sequence);
+    setGameSequence(new1Sequence);
     animateButton(colors[random]);
   };
 
-  const checkPattern = (currentPattern) => {
-    if (gameSequence[currentPattern] === userSequence[currentPattern]) {
-      if (gameSequence.length === userSequence.length) {
-        setTimeout(() => {
-          nextPattern();
-        }, 500);
-      }
-    } else {
-      playSound("wrong");
-      alert("Game Over! Press any key to restart.");
+  const handleUserClick = (color) => {
+    const newSequence = [...userSequence,color];
+    console.log("Level is",level);
+    console.log("userLevel is",userLevel);
+    console.log("newSequence[userLevel]",newSequence[userLevel]);
+    console.log("gameSequence[userLevel]",gameSequence[userLevel]);
+    setUserSequence(newSequence);
+    console.log("in handleUserClick the userSequence is ",newSequence);
+    if(newSequence[userLevel] !== gameSequence[userLevel]){
+      console.log("usersequence not matched");
       resetGame();
+      return ;
+    }
+    setUserLevel(userLevel + 1);
+    if(userLevel >= level - 1){
+      setUserLevel(0);
+      nextPattern();
     }
   };
 
-  const handleUserClick = (color) => {
-    setUserSequence([...userSequence, color]);
-    playSound(color);
-    animateButton(color);
-  };
-
-  const playSound = (name) => {
-    const audio = new Audio(`../assets/sounds/${name}.mp3`);
-    audio.play();
-  };
+  // const playSound = (name) => {
+  //   const audio = new Audio(`../assets/sounds/${name}.mp3`);
+  //   audio.play();
+  // };
 
   const animateButton = (color) => {
     const button = document.getElementById(color);
@@ -64,20 +59,22 @@ function Simon() {
     }
   };
 
+
   const resetGame = () => {
     setLevel(0);
     setGameSequence([]);
     setUserSequence([]);
     setStart(false);
   };
-
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center">
       {/* Heading */}
       <h1 className="text-3xl font-bold mb-8">Choose Difficulty</h1>
 
       {/* Rules Section */}
+      
       <div className="relative w-full max-w-lg">
+        
         {showRules && (
           <div className="absolute inset-0 bg-gray-800 p-4 rounded-lg shadow-lg z-10 text-left">
             <button className="text-red-500 text-xl absolute top-4 right-4" onClick={() => setShowRules(false)}>x</button>
@@ -95,9 +92,9 @@ function Simon() {
 
         {/* Difficulty Buttons */}
         <div className="grid grid-cols-3 gap-4 mt-8">
-          <button className="bg-green-600 p-4 rounded" onClick={() => setStart(true)}>Easy</button>
-          <button className="bg-yellow-600 p-4 rounded" onClick={() => setStart(true)}>Moderate</button>
-          <button className="bg-red-600 p-4 rounded" onClick={() => setStart(true)}>Hard</button>
+          <button className="bg-green-600 p-4 rounded" onClick={() =>{ setStart(false); resetGame();setStart(true);}}>Easy</button>
+          <button className="bg-yellow-600 p-4 rounded" onClick={() => { setStart(false); resetGame(); setStart(true);}}>Moderate</button>
+          <button className="bg-red-600 p-4 rounded" onClick={() => {setStart(false); resetGame(); setStart(true);}}>Hard</button>
         </div>
       </div>
 
