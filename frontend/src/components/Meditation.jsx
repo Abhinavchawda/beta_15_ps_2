@@ -1,6 +1,8 @@
 import { Moon, Heart, Zap, Wind } from 'lucide-react'
 import BreathingExercise from '../components/BreathingExercise'
 
+import { useState } from 'react';
+
 const categories = [
   { name: 'Sleep', icon: Moon, theme: { bgColor: 'bg-blue-100', textColor: 'text-blue-900', gradient: 'from-blue-300 via-blue-100 to-blue-50' } },
   { name: 'Inner Peace', icon: Heart, theme: { bgColor: 'bg-pink-100', textColor: 'text-pink-900', gradient: 'from-pink-200 via-pink-100 to-white' } },
