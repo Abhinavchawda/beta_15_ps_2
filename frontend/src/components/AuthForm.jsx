@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form"
 import axios from "axios"
 import Input from "./Input"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
-
+import {useDispatch, useSelector} from 'react-redux';
+import { signIn } from "../redux/UserReducer"
 const AuthForm = () => {
-    const navigate = useNavigate()
+
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
     const { register, handleSubmit, setValue, formState } = useForm({
         defaultValues: {
             username: "",
@@ -15,7 +18,14 @@ const AuthForm = () => {
     })
     const { errors } = formState
     const [isLoginForm, setIsLoginForm] = useState(true)
-
+    const updateRedux  = (response) => {
+        dispatch(signIn(response?.data));
+    }
+    const {currentUser} = useSelector((state)=> state.user);
+    useEffect(()=>{
+        console.log(currentUser);
+        
+    },[currentUser])
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-100">
             <form 
@@ -27,10 +37,11 @@ const AuthForm = () => {
                             username: formData.username,
                             password: formData.password
                         })
-                        .then(response => {
+                        .then(response => 
+                            {console.log(response);
                             // Update state of user locally
-                            console.log(response)
-                        })
+                            updateRedux(response)}
+                        )
                         .catch(error => console.error(error))
                         .finally(()=>{
                             navigate("/")

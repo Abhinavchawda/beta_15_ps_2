@@ -6,7 +6,7 @@ const userSlice =  createSlice({
     "name":"user",
     initialState,
     reducers:{
-        signIn:(state,action) => state.currentUser = action.payload
+        signIn:(state,action) => {state.currentUser = action.payload}
     }
 })
 export const {signIn} = userSlice.actions;
