@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import React, { useState } from 'react'
+import { useForm } from 'react-hook-form'
 
 const Journal = () => {
-  const [entries, setEntries] = useState([]);
-  const { register, handleSubmit, reset } = useForm();
+  const [entries, setEntries] = useState([])
+  const { register, handleSubmit, reset } = useForm()
 
   const onSubmit = (data) => {
-    const entryWithTimestamp = { ...data, timestamp: new Date().toLocaleString() };
-    setEntries([entryWithTimestamp, ...entries]);
-    reset();
-  };
+    const entryWithTimestamp = { ...data, timestamp: new Date().toLocaleString() }
+    setEntries([entryWithTimestamp, ...entries])
+    reset()
+  }
 
   return (
     <div className="container mb-8 mx-auto mt-8 max-w-2xl p-6 bg-gradient-to-r from-blue-50 via-teal-100 to-slate-100 rounded-xl shadow-lg">
@@ -19,7 +19,7 @@ const Journal = () => {
         <textarea
           {...register("entry", { required: true })}
           className="w-full h-48 p-4 text-gray-700 bg-white rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-none placeholder-gray-400 shadow-sm"
-          placeholder="Write down your thoughts..."
+          placeholder="Speak up your thoughts..."
         />
         <button
           type="submit"
@@ -44,7 +44,7 @@ const Journal = () => {
         </ul>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default Journal;
+export default Journal

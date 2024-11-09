@@ -1,5 +1,3 @@
-import React from 'react';
-
 const features = [
   {
     title: 'Brain Games',
@@ -21,7 +19,7 @@ const features = [
     description: 'Wind down with peaceful sleep stories designed to help you relax and sleep better.',
     icon: '🌙',
   },
-];
+]
 
 const About = () => {
   return (
@@ -46,7 +44,7 @@ const About = () => {
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default About;
+export default About

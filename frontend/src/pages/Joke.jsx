@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Smile, RefreshCw } from 'lucide-react';
+import React, { useState, useEffect } from 'react'
+import { Smile, RefreshCw } from 'lucide-react'
 
 const Joke = () => {
-  const [joke, setJoke] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [joke, setJoke] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   const fetchJoke = async () => {
-    setLoading(true);
+    setLoading(true)
     try {
-      const response = await fetch('https://official-joke-api.appspot.com/random_joke');
-      const data = await response.json();
-      setJoke(data);
+      const response = await fetch('https://official-joke-api.appspot.com/random_joke')
+      const data = await response.json()
+      setJoke(data)
     } catch (error) {
-      console.error("Error fetching joke:", error);
+      console.error("Error fetching joke:", error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchJoke();
-  }, []);
+    fetchJoke()
+  }, [])
 
   return (
     <div className="container mx-auto max-w-lg my-8 p-8 bg-white rounded-2xl shadow-md text-center">
@@ -48,7 +48,7 @@ const Joke = () => {
         Get Another Joke
       </button>
     </div>
-  );
-};
+  )
+}
 
-export default Joke;
+export default Joke

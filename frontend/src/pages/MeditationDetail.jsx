@@ -1,6 +1,6 @@
-import React from 'react';
-import { HeartPulseIcon } from 'lucide-react/dist/cjs/lucide-react';
-import { useParams } from 'react-router-dom';
+import React from 'react'
+import { HeartPulseIcon } from 'lucide-react/dist/cjs/lucide-react'
+import { useParams } from 'react-router-dom'
 
 export default function MeditationDetail() {
   const data = new Map()
@@ -41,5 +41,5 @@ export default function MeditationDetail() {
         {obj?.content}
       </p>
     </div>
-  );
+  )
 }
