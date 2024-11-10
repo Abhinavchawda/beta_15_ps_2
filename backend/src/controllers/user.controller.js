@@ -126,41 +126,6 @@ export const getCurrentUser = asyncWrapper(async (req, res) => {
     )
 })
 
-// export const getTopScore = asyncWrapper(async (req,res)=>{
-//     const response = await User.find({}).sort('-score').limit(10);
-//     console.log(data);
-//     if(!response){
-//         throw new ApiError({
-//             statusCode: 400,
-//             message: data.message ,
-//         })
-//     }
-//     else{
-//         return res.status(200).json(
-//             new ApiResponse({
-//                 statusCode: 200,
-//                 message: "Account details updated successfully",
-//                 data: data
-//             })
-//         )
-//     }
-// })
-
-export const updateScore = asyncWrapper(async (req,res)=>{
-    const {score} = req.body
-    await User.findByIdAndUpdate(
-        req.user?._id,
-        { $set: { score } },
-        { new: true }
-    )
-    return res.status(200).json(
-        new ApiResponse({
-            statusCode: 200,
-            message: "Score updated successfully"
-        })
-    )
-})
-
 export const updateBadgeCount = asyncWrapper(async (req,res)=>{
     const {badges} = req.body
     await User.findByIdAndUpdate(
@@ -177,7 +142,7 @@ export const updateBadgeCount = asyncWrapper(async (req,res)=>{
 })
 
 
-export const updateUser = asyncWrapper(async(req,res)=> {
+export const updateScore = asyncWrapper(async(req,res)=> {
     const user = await User.findById(req.body._id);
     if(!user){
         throw new ApiError({
@@ -193,7 +158,7 @@ export const updateUser = asyncWrapper(async(req,res)=> {
     if(finalTodayDate === updatedAt.toLocaleDateString("en-GB")){
         throw new ApiError({
             statusCode:401,
-            messagge:"Already the user has been ud"
+            message:"Meditating on same day"
         })
     }
     const updatedUser = await User.findByIdAndUpdate(req.body._id,{
@@ -204,12 +169,12 @@ export const updateUser = asyncWrapper(async(req,res)=> {
     if(!updatedUser){
         throw new Error({
             statusCode:401,
-            message:"User cannot be updated successfully"
+            message:"Score cannot be updated successfully"
         })
     }
     return res.status(200).json(new ApiResponse({
         statusCode:200,
-        message:"User has been updated successfully",
+        message:"Score has been updated successfully",
         data:updatedUser,
     }));
 })
