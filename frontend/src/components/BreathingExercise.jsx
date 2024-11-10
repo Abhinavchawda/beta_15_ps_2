@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react"
 import {useSelector} from 'react-redux'
 const BreathingExercise = () => {
   const [isSessionActive, setIsSessionActive] = useState(false)
-  const [meditationData, setMeditationData] = useState({})
+  const [meditationData, setMeditationData] = useState([])
   const [phase, setPhase] = useState("")
   const [timeLeft, setTimeLeft] = useState(0)
   const [cycleCount, setCycleCount] = useState(0)
@@ -117,7 +117,7 @@ const BreathingExercise = () => {
         </div>
       </button>
       {
-        meditationData.map((d, index)=><p key={index}>{d?.time}</p>)
+        meditationData?.map((d, index)=><p key={index}>{d?.time}</p>)
       }
     </div>
   )
