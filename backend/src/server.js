@@ -1,9 +1,9 @@
-import app from "./app.js"
-import {createServer} from "http"
-import { Server } from "socket.io"
-import connect from "./connectToDB.js"
+import app from "./app.js";
+import { createServer } from "http";
+import { Server } from "socket.io";
+import connect from "./connectToDB.js";
 
-const server = createServer(app)
+const server = createServer(app);
 
 const io = new Server(server, {
   cors: {
@@ -12,19 +12,19 @@ const io = new Server(server, {
     allowedHeaders: ["Content-Type"],
   },
   transports: ["websocket", "polling"],
-})
+});
 
 io.on("connection", (socket) => {
-  console.log("A user connected")
+  console.log("A user connected");
 
   socket.on("join", (username) => {
-    socket.username = username
+    socket.username = username;
     io.emit("message", {
       type: "system",
       content: `${username} joined the chat`,
       timestamp: new Date(),
-    })
-  })
+    });
+  });
 
   socket.on("message", (message) => {
     io.emit("message", {
@@ -32,8 +32,8 @@ io.on("connection", (socket) => {
       content: message,
       username: socket.username,
       timestamp: new Date(),
-    })
-  })
+    });
+  });
 
   socket.on("disconnect", () => {
     if (socket.username) {
@@ -41,13 +41,13 @@ io.on("connection", (socket) => {
         type: "system",
         content: `${socket.username} left the chat`,
         timestamp: new Date(),
-      })
+      });
     }
-  })
-})
+  });
+});
 
-connect().then(()=>{
+connect().then(() => {
   server.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`)
-})
-})
+    console.log(`Server running on port ${process.env.PORT}`);
+  });
+});

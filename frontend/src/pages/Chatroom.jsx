@@ -1,73 +1,79 @@
-import React, { useState, useEffect, useRef } from "react"
-import { io } from "socket.io-client"
+import React, { useState, useEffect, useRef } from "react";
+import { io } from "socket.io-client";
+// import { useSocket } from "../components/socketContext";
 
-// Initialize socket connection with explicit configuration
 const socket = io("http://localhost:3000", {
   transports: ["websocket", "polling"],
-  withCredentials: true
-})
+  withCredentials: true,
+});
 
 const Chat = () => {
-  const [username, setUsername] = useState("")
-  const [message, setMessage] = useState("")
-  const [messages, setMessages] = useState([])
-  const [isJoined, setIsJoined] = useState(false)
-  const [connectionStatus, setConnectionStatus] = useState("disconnected")
-  const messagesEndRef = useRef(null)
+  // const socket = useSocket();
+  const [username, setUsername] = useState("");
+  const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
+  const [isJoined, setIsJoined] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState("disconnected");
+  const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
-    // Connection event handlers
     socket.on("connect", () => {
-      console.log("Connected to server")
-      setConnectionStatus("connected")
-    })
+      console.log("Connected to server");
+      setConnectionStatus("connected");
+    });
 
     socket.on("connect_error", (error) => {
-      console.error("Connection error:", error)
-      setConnectionStatus("error")
-    })
+      console.error("Connection error:", error);
+      setConnectionStatus("error");
+    });
 
     socket.on("disconnect", () => {
-      console.log("Disconnected from server")
-      setConnectionStatus("disconnected")
-    })
+      console.log("Disconnected from server");
+      setConnectionStatus("disconnected");
+    });
 
-    // Message handler
     socket.on("message", (msg) => {
-      setMessages((prevMessages) => [...prevMessages, msg])
-    })
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    });
 
     return () => {
-      socket.off("connect")
-      socket.off("connect_error")
-      socket.off("disconnect")
-      socket.off("message")
-    }
-  }, [])
+      socket.off("connect");
+      socket.off("connect_error");
+      socket.off("disconnect");
+      socket.off("message");
+    };
+  }, []);
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    const roomElement = document.getElementById("room");
+    if (roomElement) {
+      roomElement.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleJoin = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (username.trim()) {
-      socket.emit("join", username)
-      setIsJoined(true)
+      socket.emit("join", username);
+      setIsJoined(true);
     }
-  }
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     if (message.trim()) {
-      socket.emit("message", message)
-      setMessage("")
+      socket.emit("message", message);
+      setMessage("");
     }
-  }
+  };
+
+  const handleRefresh = () => {
+    window.location.reload();
+  };
 
   if (!isJoined) {
     return (
@@ -75,7 +81,7 @@ const Chat = () => {
         <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
           <form onSubmit={handleJoin} className="space-y-4">
             <h2 className="text-2xl font-bold text-center text-gray-800">
-              Join Annonymous Chat
+              Join Anonymous Chat
             </h2>
             {connectionStatus === "error" && (
               <div className="text-red-500 text-center">
@@ -97,9 +103,15 @@ const Chat = () => {
               Join
             </button>
           </form>
+          <button
+            onClick={handleRefresh}
+            className="w-full mt-4 p-2 cursor-pointer text-white bg-gray-500 rounded hover:bg-gray-600"
+          >
+            Unable to join chat? Click Here
+          </button>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -107,7 +119,7 @@ const Chat = () => {
       <div className="flex-1 max-w-4xl w-full mx-auto p-4">
         <div className="bg-white rounded-lg shadow-md h-full flex flex-col">
           <div className="p-4 border-b flex justify-between items-center">
-            <div>
+            <div id="room">
               <h2 className="text-xl font-bold">Chat Room</h2>
               <p className="text-gray-600">Welcome, {username}!</p>
             </div>
@@ -172,7 +184,7 @@ const Chat = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Chat
+export default Chat;
