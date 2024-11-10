@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from "react";
+const colorClasses = {
+  blue: "bg-blue-700",
+  green: "bg-green-500",
+  yellow: "bg-yellow-300",
+  red: "bg-red-600",
+  orange: "bg-orange-500",
+  pink: "bg-pink-500",
+};
 
 function Simon() {
   const [gameSequence, setGameSequence] = useState([]);
@@ -8,13 +16,14 @@ function Simon() {
   const [showRules, setShowRules] = useState(false);
   const [userLevel, setUserLevel] = useState(0);
   const [difficulty, setDifficulty] = useState(null);
+  const [currentColor, setCurrentColor] = useState(null);
   const colors = ["blue", "green", "yellow", "red", "orange", "pink"];
 
   useEffect(() => {
     if (start && gameSequence.length === 0) {
       nextPattern();
     }
-  }, [start, gameSequence]);
+  }, [start]);
 
   const nextPattern = () => {
     setLevel(level + 1);
@@ -22,9 +31,11 @@ function Simon() {
     setUserSequence([]);
     let len = difficulty === "easy" ? 3 : difficulty === "moderate" ? 4 : 6;
     const random = Math.floor(Math.random() * len);
-    const newSequence = [...gameSequence, colors[random]];
+    const newColor = colors[random];
+    const newSequence = [...gameSequence, newColor];
     setGameSequence(newSequence);
-    setTimeout(() => animateButton(colors[random]), 500);
+    setCurrentColor(newColor);
+    setTimeout(() => animateButton(newColor), 500);
   };
 
   const handleUserClick = (color) => {
@@ -37,7 +48,7 @@ function Simon() {
     }
     setUserLevel(userLevel + 1);
 
-    if (userLevel >= level - 1) {
+    if (newSequence.length === level) {
       setUserLevel(0);
       nextPattern();
     }
@@ -50,10 +61,13 @@ function Simon() {
 
   const animateButton = (color) => {
     const button = document.getElementById(color);
-    let cl = `bg-neutral-700`;
+    const blinkClass = `bg-neutral-700`;
+    setTimeout(() => {
+      button.classList.add(blinkClass);
+      setTimeout(() => button.classList.remove(blinkClass), 300);
+    }, 50);
     playSound(color);
-    button.classList.add(cl);
-    setTimeout(() => button.classList.remove(cl), 500);
+    setTimeout(() => setCurrentColor(null), 500);
   };
 
   const resetGame = (message = "Game Over!") => {
@@ -83,7 +97,7 @@ function Simon() {
         <button
           key={index}
           id={color}
-          className={` w-20 h-20 rounded-full ${getColorClass(color)}`}
+          className={`w-20 h-20 rounded-full active:bg-white ${getColorClass(color)}`}
           onClick={() => handleUserClick(color)}
         ></button>
       ));
@@ -91,12 +105,10 @@ function Simon() {
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col items-center justify-center">
-      {/* Heading */}
       <h1 className="text-3xl font-bold mb-8">
         {start ? `Level: ${level}` : "Choose Difficulty"}
       </h1>
 
-      {/* Rules Section */}
       <div className="relative w-full max-w-lg">
         {showRules && (
           <div className="absolute inset-0 bg-gray-800 p-4 rounded-lg shadow-lg z-10 text-left">
@@ -150,16 +162,25 @@ function Simon() {
         )}
       </div>
 
-      {/* Game Buttons */}
       {start && (
         <div
-          className={`grid gap-4 mt-8 ${difficulty === "moderate" ? "grid-cols-2" : "grid-cols-3"}`}
+          className={`grid gap-4 mt-8 ${
+            difficulty === "moderate" ? "grid-cols-2" : "grid-cols-3"
+          }`}
         >
           {getColorButtons()}
         </div>
       )}
 
-      {/* Footer */}
+      {currentColor && (
+        <div className="text-2xl mt-4">
+          Next Color:{" "}
+          <span className={`font-bold ${getColorClass(currentColor)}`}>
+            {currentColor}
+          </span>
+        </div>
+      )}
+
       <footer className="mt-8">
         <button className="underline" onClick={() => setShowRules(!showRules)}>
           How to Play?
@@ -169,16 +190,7 @@ function Simon() {
   );
 }
 
-// Function to return Tailwind background color classes based on color name
 function getColorClass(color) {
-  const colorClasses = {
-    blue: "bg-blue-700",
-    green: "bg-green-500",
-    yellow: "bg-yellow-300",
-    red: "bg-red-600",
-    orange: "bg-orange-500",
-    pink: "bg-pink-500",
-  };
   return colorClasses[color] || "bg-gray-500";
 }
 
