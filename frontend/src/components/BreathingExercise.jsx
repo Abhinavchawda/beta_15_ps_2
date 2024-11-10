@@ -10,6 +10,7 @@ const BreathingExercise = () => {
   const [cycleCount, setCycleCount] = useState(0);
   const currentUser = useSelector((state) => state?.user?.currentUser);
   console.log(currentUser);
+  const [isPlaying, setIsPlaying] = useState(false);
   const phases = ["Breath In", "Hold", "Breath Out"];
 
   useEffect(() => {
@@ -71,7 +72,6 @@ const BreathingExercise = () => {
     });
   };
 
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioSrc = mediMusic;
   const audioRef = useRef(null);
 
@@ -106,13 +106,24 @@ const BreathingExercise = () => {
         className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl w-full"
       >
         <div className="flex justify-around">
-          {isSessionActive ? <CirclePause /> : <CirclePlay />}
           <audio
             ref={audioRef}
             src={audioSrc}
             onEnded={() => setIsPlaying(false)}
           />
-          <span>{isSessionActive ? "Pause" : "Play"}</span>
+          <span>
+            <button
+              onClick={togglePlayPause}
+              className={`p-3 rounded-full focus:outline-none transition-transform duration-300
+          ${isPlaying ? "bg-white text-black animate-pulse scale-110" : "bg-gray-700 hover:bg-gray-600"}`}
+            >
+              {isPlaying ? (
+                <Pause className="h-6 w-6" />
+              ) : (
+                <Play className="h-6 w-6" />
+              )}
+            </button>
+          </span>
         </div>
       </button>
     </div>
@@ -122,7 +133,6 @@ const BreathingExercise = () => {
 export default BreathingExercise;
 
 export function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioSrc =
     "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
   const audioRef = useRef(null);
