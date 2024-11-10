@@ -150,7 +150,7 @@ export default function LandingPage() {
       </section>
       <div className="my-24"></div>
       <div
-        className={`text-6xl my-10 flex justify-center items-center font-bold ${theme.text}`}
+        className={`text-6xl my-10 flex justify-center text-center items-center font-bold ${theme.text}`}
       >
         Mindful Games
       </div>
