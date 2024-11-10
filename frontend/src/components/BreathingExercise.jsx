@@ -1,63 +1,66 @@
-import axios from "axios"
-import { CirclePause, CirclePlay, Play } from "lucide-react/dist/cjs/lucide-react"
-import React, { useState, useEffect, useRef } from "react"
-import { useSelector } from 'react-redux'
-import {mediMusic} from "../assets/index"
+import axios from "axios";
+import { CirclePause, CirclePlay, Pause, Play } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
+import { mediMusic } from "../assets/index";
 const BreathingExercise = () => {
-  const [isSessionActive, setIsSessionActive] = useState(false)
-  const [meditationData, setMeditationData] = useState([])
-  const [phase, setPhase] = useState("")
-  const [timeLeft, setTimeLeft] = useState(0)
-  const [cycleCount, setCycleCount] = useState(0)
-  const currentUser = useSelector(state => state?.user?.currentUser)
-  console.log(currentUser)
-  const phases = ["Breath In", "Hold", "Breath Out"]
+  const [isSessionActive, setIsSessionActive] = useState(false);
+  const [meditationData, setMeditationData] = useState([]);
+  const [phase, setPhase] = useState("");
+  const [timeLeft, setTimeLeft] = useState(0);
+  const [cycleCount, setCycleCount] = useState(0);
+  const currentUser = useSelector((state) => state?.user?.currentUser);
+  console.log(currentUser);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const phases = ["Breath In", "Hold", "Breath Out"];
 
   useEffect(() => {
-    let timer
-    if (isSessionActive && cycleCount < 5) {
+    let timer;
+    if (isPlaying && cycleCount < 5) {
       if (timeLeft > 0) {
-        timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000)
+        timer = setInterval(() => setTimeLeft((prev) => prev - 1), 1000);
       } else {
         if (phase === "Breath Out") {
           if (cycleCount < 4) {
-            setCycleCount((prev) => prev + 1)
+            setCycleCount((prev) => prev + 1);
           } else {
-            setIsSessionActive(false) // End session after 5 cycles
+            setIsSessionActive(false); // End session after 5 cycles
           }
         }
-        setPhase(phases[(phases.indexOf(phase) + 1) % phases.length])
-        setTimeLeft(getPhaseDuration(phases[(phases.indexOf(phase) + 1) % phases.length]))
+        setPhase(phases[(phases.indexOf(phase) + 1) % phases.length]);
+        setTimeLeft(
+          getPhaseDuration(phases[(phases.indexOf(phase) + 1) % phases.length])
+        );
       }
     }
-    return () => clearInterval(timer)
-  }, [isSessionActive, timeLeft, phase, cycleCount])
+    return () => clearInterval(timer);
+  }, [isPlaying, timeLeft, phase, cycleCount]);
 
   const getPhaseDuration = (phase) => {
     switch (phase) {
       case "Breath In":
-        return 4 // 4 seconds for breath in
+        return 4; // 4 seconds for breath in
       case "Hold":
-        return 7 // 7 seconds to hold breath
+        return 7; // 7 seconds to hold breath
       case "Breath Out":
-        return 6 // 6 seconds for breath out
+        return 6; // 6 seconds for breath out
       default:
-        return 0
+        return 0;
     }
-  }
+  };
 
-  const [time, setTime] = useState(0)
+  const [time, setTime] = useState(0);
   const startSession = () => {
     let temp = new Date();
-    setTime(temp)
-    setIsSessionActive(true)
-    setCycleCount(0)
-    setPhase("Breath In")
-    setTimeLeft(getPhaseDuration("Breath In"))
-  }
+    setTime(temp);
+    setIsSessionActive(true);
+    setCycleCount(0);
+    setPhase("Breath In");
+    setTimeLeft(getPhaseDuration("Breath In"));
+  };
 
   const stopSession = async () => {
-    //call 
+    //call
     let timeScore = new Date();
     const abc = parseInt((timeScore - time) / 1000);
     const id = currentUser?._doc?.username;
@@ -66,10 +69,9 @@ const BreathingExercise = () => {
       userId: id,
       time: abc,
     });
-    setIsSessionActive(false)
-    setCycleCount(0)
-  }
-
+    setIsSessionActive(false);
+    setCycleCount(0);
+  };
 
   // const getMeditate = async () => {
   //   try {
@@ -88,12 +90,11 @@ const BreathingExercise = () => {
   //   getMeditate();
   // }, []);
 
-  const [isPlaying, setIsPlaying] = useState(false);
   const audioSrc = mediMusic;
   const audioRef = useRef(null);
 
   const togglePlayPause = () => {
-    if (!audioRef.current) return;
+    // if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -116,38 +117,45 @@ const BreathingExercise = () => {
         </div>
       )}
       <button
-        onClick={(e) => { isSessionActive ? stopSession() : startSession() ; togglePlayPause()}}
+        onClick={(e) => {
+          isSessionActive ? stopSession() : startSession();
+          togglePlayPause();
+        }}
         className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl w-full"
       >
         <div className="flex justify-around">
-          {isSessionActive ? <CirclePause /> : <CirclePlay />}
-          {audioSrc && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />}
+          {audioSrc && (
+            <audio
+              ref={audioRef}
+              src={audioSrc}
+              onEnded={() => setIsPlaying(false)}
+            />
+          )}
           <span>
-            {
-              isSessionActive ?
-                "Pause"
-                :
-                "Play"
-            }
-            {/* <button
+            <button
               onClick={togglePlayPause}
               className={`p-3 rounded-full focus:outline-none transition-transform duration-300
-          ${isPlaying ? 'bg-white text-black animate-pulse scale-110' : 'bg-gray-700 hover:bg-gray-600'}`}
+          ${isPlaying ? "bg-white text-black animate-pulse scale-110" : "bg-gray-700 hover:bg-gray-600"}`}
             >
-              {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
-            </button> */}
+              {isPlaying ? (
+                <Pause className="h-6 w-6" />
+              ) : (
+                <Play className="h-6 w-6" />
+              )}
+            </button>
           </span>
         </div>
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default BreathingExercise
+export default BreathingExercise;
 
 export function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
-  const audioSrc = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
+  const audioSrc =
+    "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
   const audioRef = useRef(null);
 
   const togglePlayPause = () => {
@@ -165,14 +173,24 @@ export function MusicPlayer() {
       <button
         onClick={togglePlayPause}
         className={`p-3 rounded-full focus:outline-none transition-transform duration-300
-          ${isPlaying ? 'bg-white text-black animate-pulse scale-110' : 'bg-gray-700 hover:bg-gray-600'}`}
+          ${isPlaying ? "bg-white text-black animate-pulse scale-110" : "bg-gray-700 hover:bg-gray-600"}`}
       >
-        {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
+        {isPlaying ? (
+          <Pause className="h-6 w-6" />
+        ) : (
+          <Play className="h-6 w-6" />
+        )}
       </button>
       <span className="text-lg font-semibold">
         {isPlaying ? "Playing" : "Paused"}
       </span>
-      {audioSrc && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />}
+      {audioSrc && (
+        <audio
+          ref={audioRef}
+          src={audioSrc}
+          onEnded={() => setIsPlaying(false)}
+        />
+      )}
     </div>
   );
 }

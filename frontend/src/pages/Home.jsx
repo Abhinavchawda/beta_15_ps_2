@@ -1,15 +1,16 @@
-import { useSelector } from 'react-redux'
-import { useState } from 'react'
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Brain } from "lucide-react";
 import Games from "./Games";
 import Joke from "./Joke";
-import { Button, Dropdown } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 
 export default function LandingPage() {
   const currentUser = useSelector((state) => state?.user?.currentUser);
   const navigate = useNavigate();
   const [mood, setMood] = useState("How you're feeling today?");
+  const [isModalOpen, setIsModalOpen] = useState(true); // Modal state
   const moods = ["Sleepy", "Peaceful", "Stressed", "Anxiety"];
 
   const moodThemes = {
@@ -37,25 +38,36 @@ export default function LandingPage() {
 
   const theme = moodThemes[mood] || moodThemes["Peaceful"];
 
+  useEffect(() => {
+    // This hook ensures the modal is shown only once when the user first lands on the page
+    if (currentUser && !localStorage.getItem("moodSelected")) {
+      setIsModalOpen(true);
+    }
+  }, [currentUser]);
+
+  const handleMoodSelect = (selectedMood) => {
+    setMood(selectedMood);
+    localStorage.setItem("moodSelected", "true"); // Store mood selection in localStorage
+    setIsModalOpen(false); // Close modal after mood selection
+  };
+
   return (
     <main className={`min-h-screen ${theme.bg} ${theme.text} pb-16`}>
-      <section className={`relative h-[80vh] flex items-center justify-center text-center ${theme.bg} ${theme.text} bg-gradient-to-tl`}>
+      <section
+        className={`relative h-[80vh] flex items-center justify-center text-center ${theme.bg} ${theme.text} bg-gradient-to-tl`}
+      >
         <div className="relative z-10 max-w-4xl mx-auto px-6 md:px-12 flex flex-col items-center">
           <img src="/homeImage2.png" className="h-28 w-28 mb-8 animate-pulse" />
           <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-xl">
             Your Path to Inner Peace
           </h1>
           <p className="text-xl md:text-2xl mb-8 drop-shadow-md">
-            Discover resources, games, and meditations to nurture your mental well-being
+            Discover resources, games, and meditations to nurture your mental
+            well-being
           </p>
           {currentUser ? (
-            <Dropdown label={mood}>
-              {moods.map((m, index) => (
-                <Dropdown.Item key={index} onClick={() => setMood(m)}>
-                  {m}
-                </Dropdown.Item>
-              ))}
-            </Dropdown>
+            // Mood is selected via the modal, no dropdown here
+            ""
           ) : (
             <Button
               className={`mt-8 ${theme.button} text-white font-medium py-2 px-6 rounded-md transition duration-300`}
@@ -77,7 +89,10 @@ export default function LandingPage() {
           <div className="grid md:grid-cols-2 gap-10 items-center">
             <div>
               <p className="mb-6 text-lg text-gray-700 leading-relaxed">
-                Mental wellness is a crucial aspect of overall health. It influences our thoughts, feelings, and actions. Prioritizing mental health can significantly improve your quality of life and resilience.
+                Mental wellness is a crucial aspect of overall health. It
+                influences our thoughts, feelings, and actions. Prioritizing
+                mental health can significantly improve your quality of life and
+                resilience.
               </p>
               <ul className="space-y-4">
                 <li className="flex items-start text-gray-700 text-lg">
@@ -129,7 +144,8 @@ export default function LandingPage() {
                       d="M13 10V3L4 14h7m8-4l-3 3m2-2l3 3m2-2l-3 3"
                     />
                   </svg>
-                  Suicide is the 2nd leading cause of death among people aged 10-34
+                  Suicide is the 2nd leading cause of death among people aged
+                  10-34
                 </li>
               </ul>
               <Button
@@ -155,6 +171,24 @@ export default function LandingPage() {
         Mindful Games
       </div>
       <Games />
+
+      {/* Mood Selection Modal */}
+      <Modal show={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <Modal.Header>How's Your Mood 👀</Modal.Header>
+        <Modal.Body>
+          <div className="grid grid-cols-2 grid-rows-2 gap-4">
+            {moods.map((moodOption, index) => (
+              <Button
+                key={index}
+                className="w-full py-4"
+                onClick={() => handleMoodSelect(moodOption)}
+              >
+                {moodOption}
+              </Button>
+            ))}
+          </div>
+        </Modal.Body>
+      </Modal>
     </main>
   );
 }
