@@ -1,11 +1,11 @@
-import Journal from "../models/journal.model.js";
+import Journal from "../models/journal.model.js"
 import asyncWrapper from "../utils/asyncWrapper.js"
 import ApiError from "../utils/ApiError.js"
-import ApiResponse from "../utils/ApiResponse.js";
+import ApiResponse from "../utils/ApiResponse.js"
 
 export const createJournal = asyncWrapper(async(req,res)=>{
-    const {userId,content} = req.body;
-    const journal = await Journal.create({userId,content});
+    const {userId,content} = req.body
+    const journal = await Journal.create({userId,content})
     if(!journal){
         throw new ApiError({
             message: "Journal cannot be created",
@@ -20,8 +20,8 @@ export const createJournal = asyncWrapper(async(req,res)=>{
 })
 
 export const lastTenJournals = asyncWrapper(async(req,res)=>{
-    const {userId} = req.body;
-    const data = await Journal.find({userId}).sort('-createdAt').limit(10);
+    const {userId} = req.body
+    const data = await Journal.find({userId}).sort('-createdAt').limit(10)
     if(!data){
         throw new ApiError({
             message:"Journal cannot be fetched for the user at the time",
