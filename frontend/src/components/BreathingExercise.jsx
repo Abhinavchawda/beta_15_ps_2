@@ -5,13 +5,11 @@ import { useSelector } from "react-redux";
 import { mediMusic } from "../assets/index";
 const BreathingExercise = () => {
   const [isSessionActive, setIsSessionActive] = useState(false);
-  const [meditationData, setMeditationData] = useState([]);
   const [phase, setPhase] = useState("");
   const [timeLeft, setTimeLeft] = useState(0);
   const [cycleCount, setCycleCount] = useState(0);
   const currentUser = useSelector((state) => state?.user?.currentUser);
   console.log(currentUser);
-  const [isPlaying, setIsPlaying] = useState(false);
   const phases = ["Breath In", "Hold", "Breath Out"];
 
   useEffect(() => {
@@ -62,39 +60,23 @@ const BreathingExercise = () => {
   const stopSession = async () => {
     //call
     let timeScore = new Date();
-    const abc = parseInt((timeScore - time) / 1000);
+    const t = parseInt((timeScore - time) / 1000);
     const id = currentUser?._doc?.username;
-    console.log(id, abc);
-    const data = await axios.post("/api/v1/user/meditate/create", {
-      userId: id,
-      time: abc,
-    });
+    console.log(id, t);
     setIsSessionActive(false);
     setCycleCount(0);
+    await axios.post("/api/v1/user/meditate/create", {
+      userId: id,
+      time: t,
+    });
   };
 
-  // const getMeditate = async () => {
-  //   try {
-  //     const id = currentUser?._doc?.username;
-  //     const data = await axios.post("/api/v1/user/meditate/get", {
-  //       userId: id,
-  //     });
-  //     console.log(data);
-  //     setMeditationData(data?.data?.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getMeditate();
-  // }, []);
-
+  const [isPlaying, setIsPlaying] = useState(false);
   const audioSrc = mediMusic;
   const audioRef = useRef(null);
 
   const togglePlayPause = () => {
-    // if (!audioRef.current) return;
+    if (!audioRef.current) return;
     if (isPlaying) {
       audioRef.current.pause();
     } else {
@@ -117,33 +99,20 @@ const BreathingExercise = () => {
         </div>
       )}
       <button
-        onClick={(e) => {
+        onClick={() => {
           isSessionActive ? stopSession() : startSession();
           togglePlayPause();
         }}
         className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl w-full"
       >
         <div className="flex justify-around">
-          {audioSrc && (
-            <audio
-              ref={audioRef}
-              src={audioSrc}
-              onEnded={() => setIsPlaying(false)}
-            />
-          )}
-          <span>
-            <button
-              onClick={togglePlayPause}
-              className={`p-3 rounded-full focus:outline-none transition-transform duration-300
-          ${isPlaying ? "bg-white text-black animate-pulse scale-110" : "bg-gray-700 hover:bg-gray-600"}`}
-            >
-              {isPlaying ? (
-                <Pause className="h-6 w-6" />
-              ) : (
-                <Play className="h-6 w-6" />
-              )}
-            </button>
-          </span>
+          {isSessionActive ? <CirclePause /> : <CirclePlay />}
+          <audio
+            ref={audioRef}
+            src={audioSrc}
+            onEnded={() => setIsPlaying(false)}
+          />
+          <span>{isSessionActive ? "Pause" : "Play"}</span>
         </div>
       </button>
     </div>
