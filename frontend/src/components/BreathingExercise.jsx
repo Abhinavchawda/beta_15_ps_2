@@ -1,12 +1,13 @@
 import { CirclePause, CirclePlay } from "lucide-react/dist/cjs/lucide-react"
 import React, { useState, useEffect } from "react"
-
+import {useSelector} from 'react-redux'
 const BreathingExercise = () => {
   const [isSessionActive, setIsSessionActive] = useState(false)
   const [phase, setPhase] = useState("")
   const [timeLeft, setTimeLeft] = useState(0)
   const [cycleCount, setCycleCount] = useState(0)
-
+  const {currentUser} = useSelector(state=>state.user);
+  console.log(currentUser);
   const phases = ["Breath In", "Hold", "Breath Out"]
 
   useEffect(() => {
@@ -42,17 +43,65 @@ const BreathingExercise = () => {
     }
   }
 
+
+
+  const [time, setTime] = useState(0)
   const startSession = () => {
+    let temp = new Date();
+    setTime(temp)
     setIsSessionActive(true)
     setCycleCount(0)
     setPhase("Breath In")
     setTimeLeft(getPhaseDuration("Breath In"))
   }
 
-  const stopSession = () => {
+  const stopSession = async() => {
+    //call 
+    let timeScore = new Date();
+    const abc = parseInt((timeScore - time)/1000);
+    const id = currentUser.data._doc.username;
+    console.log(id, abc);
+    const response = await fetch("/api/v1/user/createmeditate",{
+      method:'POST',
+      headers:{'Content-Type':"application/json"},
+      body:JSON.stringify({
+        userId:id,
+        time:abc,
+      })
+    });
+    
+    const data = await response.json();
+    if(!response.ok){
+      console.log(data.message);
+    }
+    else{
+      console.log(data);
+    }
     setIsSessionActive(false)
     setCycleCount(0)
   }
+
+
+  const getMeditate = async(req,res) => {
+    try{
+      const id = currentUser.data._doc.username;
+      const response = await fetch("/api/v1/user/getmeditate",{
+        method:'POST',
+        headers:{'Content-Type':"application/json"},
+        body:JSON.stringify({
+          userId:id,
+        })
+      });
+      const data = await response.json();
+      console.log(data);
+    }catch(error){
+      console.log(error);
+    }
+  }
+
+  useEffect(()=>{
+    getMeditate();
+  },[]);
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 rounded-xl border border-white p-4 min-h-[30vh] w-fit mx-auto shadow-xl gap-3">

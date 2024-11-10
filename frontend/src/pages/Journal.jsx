@@ -34,7 +34,7 @@ const Journal = () => {
           content: formData.content
         })
         .then(()=>alert("Journal saved successfully"))
-        .catch(error => console.error(error.message))
+        .catch(error => console.log(error.message))
       })} className="mb-10">
         <textarea
           {...register("content", { required: true })}

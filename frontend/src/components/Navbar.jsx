@@ -25,7 +25,7 @@ const Navbar = () => {
 
     const dispatch = useDispatch()
     const currentUser = useSelector(state => state?.user?.currentUser)
-
+    console.log(currentUser);
     return (
         <div className="min-h-full">
             <Disclosure as="nav" className="bg-gray-900 backdrop-blur-lg mx-auto">

@@ -3,6 +3,7 @@ import ApiError from "../utils/ApiError.js"
 import User from "../models/user.model.js"
 import ApiResponse from "../utils/ApiResponse.js"
 import { COOKIE_OPTIONS } from "../constants.js"
+import meditation from "../models/meditation.model.js"
 
 export const register = asyncWrapper(async (req, res) => {
     // Extract data from request body
@@ -173,4 +174,99 @@ export const updateBadgeCount = asyncWrapper(async (req,res)=>{
             message: "Badge count updated successfully"
         })
     )
+})
+
+
+export const updateUser = asyncWrapper(async(req,res)=> {
+    const user = await User.findById(req.body._id);
+    if(!user){
+        throw new ApiError({
+            statusCode:401,
+            message:"User cannot be found in this schema",
+        })
+    }
+    const todayDate = new Date();
+    const finalTodayDate = todayDate.toLocaleDateString("en-GB");
+    const {updatedAt} = req.body;
+    console.log("Updated at",updatedAt);
+    console.log(finalTodayDate);
+    if(finalTodayDate === updatedAt.toLocaleDateString("en-GB")){
+        throw new ApiError({
+            statusCode:401,
+            messagge:"Already the user has been ud"
+        })
+    }
+    const updatedUser = await User.findByIdAndUpdate(req.body._id,{
+        $set:{
+            score:user.score + 1
+        }
+    },{new:true});
+    if(!updatedUser){
+        throw new Error({
+            statusCode:401,
+            message:"User cannot be updated successfully"
+        })
+    }
+    return res.status(200).json(new ApiResponse({
+        statusCode:200,
+        message:"User has been updated successfully",
+        data:updatedUser,
+    }));
+})
+
+
+export const createMeditate = asyncWrapper(async(req,res)=>{
+    //we need user id as userId in the body
+    const {userId,time} = req.body;
+    if(!userId){
+        throw new ApiError({
+            statusCode:401,
+            message:"Meditation cannot be created without the user presence"
+        })
+    }
+    const userMeditate = await User.findOne({username:userId});
+    
+    if(!userMeditate){
+        throw new ApiError({
+            statusCode:400,
+            message:"user doesnot exist in the database"
+        })
+    }
+    const user = new meditation({
+        userId:userId,
+        time:time,
+    });
+    const updatedUser = await user.save();
+    console.log("usr : ", updatedUser);
+    
+    if(!updatedUser){
+        throw new ApiError({
+            message:"meditation cannot be created in the schema of meditation",
+            statusCode:400,
+        })
+    }
+    return res.status(200).json(new ApiResponse({
+        statusCode:200,
+        message:"User has been updated successfully",
+        data:updatedUser,
+    }));
+})
+
+export const getMeditate = asyncWrapper(async(req,res)=>{
+    const {userId} = req.body;
+    const finalData = await meditation.find({userId:userId}).sort("-createdAt").limit(10);
+    console.log(finalData);
+    if(!finalData){
+        throw new ApiError({
+            message:"Meditation data cannot be fetched.",
+            statusCode:401,
+        })
+    }
+    return res.status(200).json(
+        new ApiResponse({
+            statusCode:200,
+            message:"These are latest entries of the meditation for current user",
+            data:finalData
+        })
+    );
 })
