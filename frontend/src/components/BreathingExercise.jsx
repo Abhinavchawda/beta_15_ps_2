@@ -62,12 +62,10 @@ const BreathingExercise = () => {
     //call
     let timeScore = new Date();
     const t = parseInt((timeScore - time) / 1000);
-    const id = currentUser?._doc?.username;
-    console.log(id, t);
     setIsSessionActive(false);
     setCycleCount(0);
     await axios.post("/api/v1/user/meditate/create", {
-      userId: id,
+      username: currentUser?._doc?.username,
       time: t,
     });
   };
@@ -98,7 +96,7 @@ const BreathingExercise = () => {
           <p>Click to start your breathing session</p>
         </div>
       )}
-      <button
+      <div
         onClick={() => {
           isSessionActive ? stopSession() : startSession();
           togglePlayPause();
@@ -125,7 +123,7 @@ const BreathingExercise = () => {
             </button>
           </span>
         </div>
-      </button>
+      </div>
     </div>
   );
 };

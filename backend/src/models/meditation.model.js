@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
 const meditationSchema = new mongoose.Schema({
-    userId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    username:{
+        type: String,
         required: true,
         trim: true
     },
@@ -13,8 +12,8 @@ const meditationSchema = new mongoose.Schema({
         default:54
     },
     date:{
-        type:Date,
-        default:() => new Date(), 
+        type:String,
+        default:() => new Date().toDateString(), 
     }
 },{timestamps:true});
 

@@ -4,6 +4,7 @@ import User from "../models/user.model.js"
 import ApiResponse from "../utils/ApiResponse.js"
 import { COOKIE_OPTIONS } from "../constants.js"
 import meditation from "../models/meditation.model.js"
+import mongoose from "mongoose"
 
 export const register = asyncWrapper(async (req, res) => {
     // Extract data from request body
@@ -182,24 +183,18 @@ export const updateScore = asyncWrapper(async(req,res)=> {
 
 export const createMeditate = asyncWrapper(async(req,res)=>{
     //we need user id as userId in the body
-    const {userId,time} = req.body
-    if(!userId){
+    const {username,time} = req.body
+    if(!username){
+        console.log(username)
+        
         throw new ApiError({
             statusCode:401,
             message:"Meditation cannot be created without the user presence"
         })
     }
-    const userMeditate = await User.findOne({username:userId})
-    
-    if(!userMeditate){
-        throw new ApiError({
-            statusCode:400,
-            message:"user doesnot exist in the database"
-        })
-    }
     const user = new meditation({
-        userId:userId,
-        time:time,
+        username,
+        time
     })
     const updatedUser = await user.save()
     console.log("usr : ", updatedUser)
@@ -210,6 +205,8 @@ export const createMeditate = asyncWrapper(async(req,res)=>{
             statusCode:400,
         })
     }
+    console.log("Meditation entry made")
+    
     return res.status(200).json(new ApiResponse({
         statusCode:200,
         message:"User has been updated successfully",
@@ -218,10 +215,10 @@ export const createMeditate = asyncWrapper(async(req,res)=>{
 })
 
 export const getMeditate = asyncWrapper(async(req,res)=>{
-    const {userId} = req.body
-    const finalData = await meditation.find({userId:userId}).sort("-createdAt").limit(10)
-    console.log(finalData)
-    if(!finalData){
+    const {username} = req.body
+    const data = await meditation.find({username}).sort("-createdAt").limit(10)
+
+    if(!data){
         throw new ApiError({
             message:"Meditation data cannot be fetched.",
             statusCode:401,
@@ -231,7 +228,7 @@ export const getMeditate = asyncWrapper(async(req,res)=>{
         new ApiResponse({
             statusCode:200,
             message:"These are latest entries of the meditation for current user",
-            data:finalData
+            data
         })
     )
 })

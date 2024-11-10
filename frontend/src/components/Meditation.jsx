@@ -65,10 +65,6 @@ export default function Meditation() {
 
   const getMeditate = async () => {
     try {
-      const id = currentUser?._doc?.username
-      const data = await axios.post("/api/v1/user/meditate/get", {
-        userId: id,
-      })
       console.log(data)
       setMeditationData(data?.data?.data)
     } catch (error) {
@@ -77,8 +73,12 @@ export default function Meditation() {
   }
 
   useEffect(() => {
-    getMeditate()
-  }, [])
+    axios.post("/api/v1/user/meditate/get", {
+        username:  currentUser?._doc?.username,
+    })
+    .then(response => setMeditationData(response.data?.data))
+    .catch(error => console.error(error.message))
+  })
 
   const navigate = useNavigate()
   if (!currentUser)
