@@ -81,8 +81,8 @@ export default function Meditation() {
   })
 
   const navigate = useNavigate()
-  if (!currentUser)
-    return navigate("/")
+  // if (!currentUser)
+  //   return navigate("/")
   return (
     <main className={`min-h-screen ${selectedCategory.theme.bgColor} ${selectedCategory.theme.textColor} p-8 md:px-16 pb-20`}>
       {/* Header Section */}
