@@ -2,62 +2,11 @@
     "version": 2,
     "builds": [
         {
-            "src": "../routes/index.js",
+            "src": "src/server.js",
             "use": "@vercel/node"
         }
     ],
     "routes": [
-        {
-            "src": "/journal/(.*)",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/journal/create",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/journal/recent",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/users",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/users/(.*)",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/auth/register",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/auth/login",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/auth/logout",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/users/update/badge-count",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/users/current",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/users/score/update",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/meditate/create",
-            "dest": "../routes/index.js"
-        },
-        {
-            "src": "/meditate/get",
-            "dest": "../routes/index.js"
-        }
+        { "src": "/(.*)", "dest": "src/server.js" }
     ]
 }
