@@ -1,13 +1,15 @@
+import axios from "axios"
 import { CirclePause, CirclePlay } from "lucide-react/dist/cjs/lucide-react"
 import React, { useState, useEffect } from "react"
 import {useSelector} from 'react-redux'
 const BreathingExercise = () => {
   const [isSessionActive, setIsSessionActive] = useState(false)
+  const [meditationData, setMeditationData] = useState({})
   const [phase, setPhase] = useState("")
   const [timeLeft, setTimeLeft] = useState(0)
   const [cycleCount, setCycleCount] = useState(0)
-  const {currentUser} = useSelector(state=>state.user);
-  console.log(currentUser);
+  const currentUser = useSelector(state => state?.user?.currentUser)
+  console.log(currentUser)
   const phases = ["Breath In", "Hold", "Breath Out"]
 
   useEffect(() => {
@@ -43,8 +45,6 @@ const BreathingExercise = () => {
     }
   }
 
-
-
   const [time, setTime] = useState(0)
   const startSession = () => {
     let temp = new Date();
@@ -55,45 +55,29 @@ const BreathingExercise = () => {
     setTimeLeft(getPhaseDuration("Breath In"))
   }
 
-  const stopSession = async() => {
+  const stopSession = async () => {
     //call 
     let timeScore = new Date();
     const abc = parseInt((timeScore - time)/1000);
-    const id = currentUser.data._doc.username;
+    const id = currentUser?._doc?.username;
     console.log(id, abc);
-    const response = await fetch("/api/v1/user/createmeditate",{
-      method:'POST',
-      headers:{'Content-Type':"application/json"},
-      body:JSON.stringify({
-        userId:id,
-        time:abc,
-      })
+    const data = await axios.post("/api/v1/user/meditate/create",{
+      userId:id,
+      time:abc,
     });
-    
-    const data = await response.json();
-    if(!response.ok){
-      console.log(data.message);
-    }
-    else{
-      console.log(data);
-    }
     setIsSessionActive(false)
     setCycleCount(0)
   }
 
 
-  const getMeditate = async(req,res) => {
+  const getMeditate = async () => {
     try{
-      const id = currentUser.data._doc.username;
-      const response = await fetch("/api/v1/user/getmeditate",{
-        method:'POST',
-        headers:{'Content-Type':"application/json"},
-        body:JSON.stringify({
-          userId:id,
-        })
+      const id = currentUser?._doc?.username;
+      const data = await axios.post("/api/v1/user/meditate/get",{
+        userId:id,
       });
-      const data = await response.json();
       console.log(data);
+      setMeditationData(data?.data?.data);
     }catch(error){
       console.log(error);
     }
@@ -132,6 +116,9 @@ const BreathingExercise = () => {
           </span>
         </div>
       </button>
+      {
+        meditationData.map((d, index)=><p key={index}>{d?.time}</p>)
+      }
     </div>
   )
 }

@@ -10,8 +10,8 @@ router.post("/update/score",updateScore)
 router.post("/update/badge-count",updateBadgeCount)
 router.get("/current",getCurrentUser)
 router.put("/updatescore",updateUser);
-router.post("/createmeditate",createMeditate);
-router.post("/getmeditate",getMeditate);
+router.post("/meditate/create",createMeditate);
+router.post("/meditate/get",getMeditate);
 
 
 export default router

@@ -18,7 +18,7 @@ const Journal = () => {
       userId: currentUser?._doc?._id
     }).then(response => {
       console.log(response)
-      // setJournals()
+      setJournals(response?.data?.data)
     }).catch(error => console.error(error))
   },[])
 
@@ -48,6 +48,9 @@ const Journal = () => {
           Save Entry
         </button>
       </form>
+      {
+        journals.map((j, index)=><p key={index} >{j?.content}</p>)
+      }
     </div>
   )
 }
