@@ -4,6 +4,8 @@ import { Moon, Heart, Zap, Wind, PauseIcon, PlayIcon, Play, Pause } from 'lucide
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from "react-redux"
 import BreathingExercise from '../components/BreathingExercise'
+import axios from 'axios';
+
 
 const categories = [
   { name: 'Sleep', icon: Moon, theme: { bgColor: 'bg-blue-100', textColor: 'text-blue-900', gradient: 'from-blue-300 via-blue-100 to-blue-50' } },
@@ -57,10 +59,29 @@ const meditations = [
   },
 ];
 
+
 export default function Meditation() {
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [meditationData, setMeditationData] = useState([])
 
   const currentUser = useSelector(state => state?.user?.currentUser)
+  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+
+  const getMeditate = async () => {
+    try {
+      const id = currentUser?._doc?.username;
+      const data = await axios.post("/api/v1/user/meditate/get", {
+        userId: id,
+      });
+      console.log(data);
+      setMeditationData(data?.data?.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    getMeditate();
+  }, []);
 
   const navigate = useNavigate();
   return (
@@ -75,8 +96,8 @@ export default function Meditation() {
                 <button
                   onClick={() => setSelectedCategory(category)}
                   className={`flex items-center space-x-2 px-4 py-2 rounded-full transition-colors ${selectedCategory.name === category.name
-                      ? 'bg-gray-200 text-gray-800'
-                      : 'hover:bg-gray-100'
+                    ? 'bg-gray-200 text-gray-800'
+                    : 'hover:bg-gray-100'
                     }`}
                 >
                   <category.icon className="w-5 h-5" />
@@ -106,8 +127,6 @@ export default function Meditation() {
         </div>
       </section>
 
-      <MusicPlayer />
-
       <section className='mb-8'>
         <h2 className="text-3xl mt-8 font-semibold mb-6">Get Relaxed</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
@@ -131,38 +150,27 @@ export default function Meditation() {
           ))}
         </div>
       </section>
+      <div className="mt-16 mb-8 text-center">
+        <h2 className="text-4xl font-bold text-gray-900 mb-4">Analyse Your Meditation Sessions</h2>
+        <p className="text-lg text-gray-600">Review your past sessions and track your progress over time.</p>
+      </div>
+
+      <div className="max-h-[40vh] overflow-auto rounded-lg bg-white shadow-inner p-6">
+        <div className="flex justify-start items-center gap-6 overflow-x-auto py-4">
+          {meditationData?.reverse().map((session, index) => (
+            <div
+              key={index}
+              className="flex-shrink-0 w-72 p-6 bg-white rounded-xl shadow-lg border border-gray-200 hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="flex-grow">
+                <p className="text-lg font-semibold text-gray-800">Session {index + 1}</p>
+                <p className="text-gray-600">Duration: {session.time} seconds</p>
+                <p className="text-sm text-gray-500">Date: {new Date(session.createdAt).toLocaleString()}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </main>
-  );
-}
-
-export function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioSrc = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
-  const audioRef = useRef(null);
-
-  const togglePlayPause = () => {
-    if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
-    setIsPlaying(!isPlaying);
-  };
-
-  return (
-    <div className="flex items-center justify-center p-6 bg-gray-800 rounded-lg shadow-lg text-white space-x-4">
-      <button
-        onClick={togglePlayPause}
-        className={`p-3 rounded-full focus:outline-none transition-transform duration-300
-          ${isPlaying ? 'bg-white text-black animate-pulse scale-110' : 'bg-gray-700 hover:bg-gray-600'}`}
-      >
-        {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
-      </button>
-      <span className="text-lg font-semibold">
-        {isPlaying ? "Playing" : "Paused"}
-      </span>
-      {audioSrc && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />}
-    </div>
   );
 }
