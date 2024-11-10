@@ -1,18 +1,16 @@
-import { useState, useEffect, useRef } from 'react';
-import { Moon, Heart, Zap, Wind, PauseIcon, PlayIcon, Play, Pause } from 'lucide-react'
-// import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import { Moon, Heart, Zap, Wind } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from "react-redux"
 import BreathingExercise from '../components/BreathingExercise'
-import axios from 'axios';
-
+import axios from 'axios'
 
 const categories = [
   { name: 'Sleep', icon: Moon, theme: { bgColor: 'bg-blue-100', textColor: 'text-blue-900', gradient: 'from-blue-300 via-blue-100 to-blue-50' } },
   { name: 'Inner Peace', icon: Heart, theme: { bgColor: 'bg-pink-100', textColor: 'text-pink-900', gradient: 'from-pink-200 via-pink-100 to-white' } },
   { name: 'Stress', icon: Zap, theme: { bgColor: 'bg-yellow-100', textColor: 'text-yellow-900', gradient: 'from-yellow-200 via-yellow-100 to-yellow-50' } },
   { name: 'Anxiety', icon: Wind, theme: { bgColor: 'bg-green-100', textColor: 'text-green-900', gradient: 'from-green-200 via-green-100 to-green-50' } },
-];
+]
 
 const meditations = [
   {
@@ -57,33 +55,34 @@ const meditations = [
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQKJs3sShikiCyiefF80i56MTO8zhgbOqs6AA&s',
     bgColor: 'rgb(255,235,59)', // Sunny Yellow
   },
-];
-
+]
 
 export default function Meditation() {
   const [meditationData, setMeditationData] = useState([])
 
   const currentUser = useSelector(state => state?.user?.currentUser)
-  const [selectedCategory, setSelectedCategory] = useState(categories[0]);
+  const [selectedCategory, setSelectedCategory] = useState(categories[0])
 
   const getMeditate = async () => {
     try {
-      const id = currentUser?._doc?.username;
+      const id = currentUser?._doc?.username
       const data = await axios.post("/api/v1/user/meditate/get", {
         userId: id,
-      });
-      console.log(data);
-      setMeditationData(data?.data?.data);
+      })
+      console.log(data)
+      setMeditationData(data?.data?.data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
   }
 
   useEffect(() => {
-    getMeditate();
-  }, []);
+    getMeditate()
+  }, [])
 
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  if (!currentUser)
+    return navigate("/")
   return (
     <main className={`min-h-screen ${selectedCategory.theme.bgColor} ${selectedCategory.theme.textColor} p-8 md:px-16 pb-20`}>
       {/* Header Section */}
@@ -172,5 +171,5 @@ export default function Meditation() {
         </div>
       </div>
     </main>
-  );
+  )
 }

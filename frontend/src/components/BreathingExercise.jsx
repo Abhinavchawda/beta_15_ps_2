@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux'
 import {mediMusic} from "../assets/index"
 const BreathingExercise = () => {
   const [isSessionActive, setIsSessionActive] = useState(false)
-  const [meditationData, setMeditationData] = useState([])
   const [phase, setPhase] = useState("")
   const [timeLeft, setTimeLeft] = useState(0)
   const [cycleCount, setCycleCount] = useState(0)
@@ -48,7 +47,7 @@ const BreathingExercise = () => {
 
   const [time, setTime] = useState(0)
   const startSession = () => {
-    let temp = new Date();
+    let temp = new Date()
     setTime(temp)
     setIsSessionActive(true)
     setCycleCount(0)
@@ -58,49 +57,31 @@ const BreathingExercise = () => {
 
   const stopSession = async () => {
     //call 
-    let timeScore = new Date();
-    const abc = parseInt((timeScore - time) / 1000);
-    const id = currentUser?._doc?.username;
-    console.log(id, abc);
-    const data = await axios.post("/api/v1/user/meditate/create", {
-      userId: id,
-      time: abc,
-    });
+    let timeScore = new Date()
+    const t = parseInt((timeScore - time) / 1000)
+    const id = currentUser?._doc?.username
+    console.log(id, t)
     setIsSessionActive(false)
     setCycleCount(0)
+    await axios.post("/api/v1/user/meditate/create", {
+      userId: id,
+      time: t,
+    })
   }
 
-
-  // const getMeditate = async () => {
-  //   try {
-  //     const id = currentUser?._doc?.username;
-  //     const data = await axios.post("/api/v1/user/meditate/get", {
-  //       userId: id,
-  //     });
-  //     console.log(data);
-  //     setMeditationData(data?.data?.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getMeditate();
-  // }, []);
-
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioSrc = mediMusic;
-  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false)
+  const audioSrc = mediMusic
+  const audioRef = useRef(null)
 
   const togglePlayPause = () => {
-    if (!audioRef.current) return;
+    if (!audioRef.current) return
     if (isPlaying) {
-      audioRef.current.pause();
+      audioRef.current.pause()
     } else {
-      audioRef.current.play();
+      audioRef.current.play()
     }
-    setIsPlaying(!isPlaying);
-  };
+    setIsPlaying(!isPlaying)
+  }
 
   return (
     <div className="flex flex-col items-center justify-center space-y-4 rounded-xl border border-white p-4 min-h-[30vh] w-fit mx-auto shadow-xl gap-3">
@@ -116,12 +97,12 @@ const BreathingExercise = () => {
         </div>
       )}
       <button
-        onClick={(e) => { isSessionActive ? stopSession() : startSession() ; togglePlayPause()}}
+        onClick={() => { isSessionActive ? stopSession() : startSession();  togglePlayPause()}}
         className="bg-[rgb(16,20,61)] hover:bg-blue-700 text-white py-2 px-4 rounded-xl w-full"
       >
         <div className="flex justify-around">
           {isSessionActive ? <CirclePause /> : <CirclePlay />}
-          {audioSrc && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />}
+          <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />
           <span>
             {
               isSessionActive ?
@@ -129,13 +110,6 @@ const BreathingExercise = () => {
                 :
                 "Play"
             }
-            {/* <button
-              onClick={togglePlayPause}
-              className={`p-3 rounded-full focus:outline-none transition-transform duration-300
-          ${isPlaying ? 'bg-white text-black animate-pulse scale-110' : 'bg-gray-700 hover:bg-gray-600'}`}
-            >
-              {isPlaying ? <Pause className="h-6 w-6" /> : <Play className="h-6 w-6" />}
-            </button> */}
           </span>
         </div>
       </button>
@@ -146,19 +120,19 @@ const BreathingExercise = () => {
 export default BreathingExercise
 
 export function MusicPlayer() {
-  const [isPlaying, setIsPlaying] = useState(false);
-  const audioSrc = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3";
-  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false)
+  const audioSrc = "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3"
+  const audioRef = useRef(null)
 
   const togglePlayPause = () => {
-    if (!audioRef.current) return;
+    if (!audioRef.current) return
     if (isPlaying) {
-      audioRef.current.pause();
+      audioRef.current.pause()
     } else {
-      audioRef.current.play();
+      audioRef.current.play()
     }
-    setIsPlaying(!isPlaying);
-  };
+    setIsPlaying(!isPlaying)
+  }
 
   return (
     <div className="flex items-center justify-center p-6 bg-gray-800 rounded-lg shadow-lg text-white space-x-4">
@@ -174,5 +148,5 @@ export function MusicPlayer() {
       </span>
       {audioSrc && <audio ref={audioRef} src={audioSrc} onEnded={() => setIsPlaying(false)} />}
     </div>
-  );
+  )
 }
