@@ -141,31 +141,31 @@ export const updateBadgeCount = asyncWrapper(async (req,res)=>{
     )
 })
 
-
 export const updateScore = asyncWrapper(async(req,res)=> {
-    const user = await User.findById(req.body._id);
+    const {id} = req.body
+    const user = await User.findById(id)
     if(!user){
         throw new ApiError({
             statusCode:401,
             message:"User cannot be found in this schema",
         })
     }
-    const todayDate = new Date();
-    const finalTodayDate = todayDate.toLocaleDateString("en-GB");
-    const {updatedAt} = req.body;
-    console.log("Updated at",updatedAt);
-    console.log(finalTodayDate);
+    const todayDate = new Date()
+    const finalTodayDate = todayDate.toLocaleDateString("en-GB")
+    const {updatedAt} = req.body
+    console.log("Updated at",updatedAt)
+    console.log(finalTodayDate)
     if(finalTodayDate === updatedAt.toLocaleDateString("en-GB")){
         throw new ApiError({
             statusCode:401,
             message:"Meditating on same day"
         })
     }
-    const updatedUser = await User.findByIdAndUpdate(req.body._id,{
+    const updatedUser = await User.findByIdAndUpdate(id,{
         $set:{
             score:user.score + 1
         }
-    },{new:true});
+    },{new:true})
     if(!updatedUser){
         throw new Error({
             statusCode:401,
@@ -176,20 +176,20 @@ export const updateScore = asyncWrapper(async(req,res)=> {
         statusCode:200,
         message:"Score has been updated successfully",
         data:updatedUser,
-    }));
+    }))
 })
 
 
 export const createMeditate = asyncWrapper(async(req,res)=>{
     //we need user id as userId in the body
-    const {userId,time} = req.body;
+    const {userId,time} = req.body
     if(!userId){
         throw new ApiError({
             statusCode:401,
             message:"Meditation cannot be created without the user presence"
         })
     }
-    const userMeditate = await User.findOne({username:userId});
+    const userMeditate = await User.findOne({username:userId})
     
     if(!userMeditate){
         throw new ApiError({
@@ -200,9 +200,9 @@ export const createMeditate = asyncWrapper(async(req,res)=>{
     const user = new meditation({
         userId:userId,
         time:time,
-    });
-    const updatedUser = await user.save();
-    console.log("usr : ", updatedUser);
+    })
+    const updatedUser = await user.save()
+    console.log("usr : ", updatedUser)
     
     if(!updatedUser){
         throw new ApiError({
@@ -214,13 +214,13 @@ export const createMeditate = asyncWrapper(async(req,res)=>{
         statusCode:200,
         message:"User has been updated successfully",
         data:updatedUser,
-    }));
+    }))
 })
 
 export const getMeditate = asyncWrapper(async(req,res)=>{
-    const {userId} = req.body;
-    const finalData = await meditation.find({userId:userId}).sort("-createdAt").limit(10);
-    console.log(finalData);
+    const {userId} = req.body
+    const finalData = await meditation.find({userId:userId}).sort("-createdAt").limit(10)
+    console.log(finalData)
     if(!finalData){
         throw new ApiError({
             message:"Meditation data cannot be fetched.",
@@ -233,5 +233,5 @@ export const getMeditate = asyncWrapper(async(req,res)=>{
             message:"These are latest entries of the meditation for current user",
             data:finalData
         })
-    );
+    )
 })

@@ -2,9 +2,10 @@ import mongoose from "mongoose";
 
 const meditationSchema = new mongoose.Schema({
     userId:{
-        type:String,
-        required:true,
-        trim:true,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+        trim: true
     },
     time:{
         type:Number,
