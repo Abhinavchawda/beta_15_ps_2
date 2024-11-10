@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { HASHING_ROUNDS } from "../constants.js"
+import {accessTokenExpiry} from "../constants.js"
 
 const UserSchema = new mongoose.Schema(
     {
@@ -32,9 +33,8 @@ const UserSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
-        streak_count: {
-            type: Number,
-            default: 0
+        lastMeditatedOn: {
+            type: Date
         }
     },
     { timestamps: true }
@@ -59,7 +59,7 @@ UserSchema.methods.generateAccessToken = function () {
             email: this.email
         },
         process.env.ACCESS_TOKEN_SECRET,
-        { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
+        { expiresIn: accessTokenExpiry }
     )
 }
 

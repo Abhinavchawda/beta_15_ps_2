@@ -7,7 +7,7 @@ const socket = io("http://localhost:3000", {
   withCredentials: true
 })
 
-const ChatRoom = () => {
+const Chat = () => {
   const [username, setUsername] = useState("")
   const [message, setMessage] = useState("")
   const [messages, setMessages] = useState([])
@@ -75,7 +75,7 @@ const ChatRoom = () => {
         <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
           <form onSubmit={handleJoin} className="space-y-4">
             <h2 className="text-2xl font-bold text-center text-gray-800">
-              Join Chat
+              Join Annonymous Chat
             </h2>
             {connectionStatus === "error" && (
               <div className="text-red-500 text-center">
@@ -91,7 +91,7 @@ const ChatRoom = () => {
             />
             <button
               type="submit"
-              className="w-full p-2 text-white bg-blue-500 rounded hover:bg-blue-600"
+              className="w-full p-2 cursor-pointer text-white bg-blue-500 rounded hover:bg-blue-600"
               disabled={connectionStatus !== "connected"}
             >
               Join
@@ -162,7 +162,7 @@ const ChatRoom = () => {
               />
               <button
                 type="submit"
-                className="px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-600 disabled:bg-gray-400"
+                className="px-4 py-2 text-white cursor-pointer bg-blue-500 rounded hover:bg-blue-600 disabled:bg-gray-400"
                 disabled={connectionStatus !== "connected"}
               >
                 Send
@@ -175,4 +175,4 @@ const ChatRoom = () => {
   )
 }
 
-export default ChatRoom
+export default Chat

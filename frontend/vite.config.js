@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "https://qcm-server.vercel.app"
+      "/api": {
+        target: "http://localhost:3000",
+        secure: false
+      }
     }
   }
 })
